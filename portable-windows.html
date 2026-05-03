@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LibreWolf Portable for Windows — Run a Private Browser from USB</title>
+  <meta name="description" content="Use LibreWolf Portable on Windows to carry a private browser on a USB drive. Pros & cons, profile location, run-from-USB workflow, and update tips.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/portable-windows.html">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="LibreWolf Portable for Windows — Run a Private Browser from USB">
+  <meta property="og:description" content="Carry LibreWolf on a USB drive. Learn the differences between portable and installed, profile handling, and update tips.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/portable-windows.html">
+  <meta property="og:image" content="/og-librewolf-windows.png">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F172A">
+
+  <!-- GA4: default denied until consent is granted -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('consent', 'default', { 'analytics_storage': 'denied' });
+    // will call gtag('config','G-PENKWJKN66') after Accept
+  </script>
+
+  <!-- Single embedded style; high-contrast palette; responsive grid/flex; focus-visible styles. -->
+  <style>
+    :root{
+      --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB;
+      --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937;
+      --radius:10px; --max-width:1100px; --container-pad:18px;
+      --focus: 3px solid rgba(34,211,238,0.18); --shadow: 0 6px 18px rgba(2,6,23,0.6);
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+    a{color:var(--accent);text-decoration:none}
+    a:focus{outline:none;box-shadow:var(--focus)}
+
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
+
+    main{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-top:22px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.8rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin:0 0 16px}
+
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .btn:focus{outline:none;box-shadow:var(--focus)}
+
+    .section{padding:12px;border:1px dashed rgba(255,255,255,0.06);border-radius:10px;margin-bottom:10px}
+    .section h3{margin:0 0 6px;font-size:1.05rem}
+    .note{color:var(--muted);font-size:0.95rem}
+
+    .toc{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .toc a{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:0.9rem}
+    .toc a:hover{color:var(--text)}
+
+    aside h2{margin-top:0}
+    .meta{color:var(--muted);font-size:0.95rem}
+
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+    /* Cookie banner */
+    .cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;background:var(--surface);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(2,6,23,0.7);z-index:9999}
+    .cookie-text{flex:1;color:var(--muted)}
+    .cookie-actions{display:flex;gap:10px}
+    .cookie-actions .btn{padding:8px 12px;font-size:0.95rem}
+
+    /* responsive */
+    @media (max-width:900px){
+      main{grid-template-columns:1fr}
+      .card{padding:16px}
+    }
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+
+  <!-- SVG sprite -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-download" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10m0 0 4-4m-4 4-4-4M5 21h14v-2H5v2z"/></symbol>
+    <symbol id="icon-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3.5l8.5-1.5V11H3V3.5zm9.5-1.5L21 3v8.5H12.5V2zM3 12.5l8.5-1.5V22H3v-9.5zm9.5-1.5L21 11v9l-8.5 1.5V11z"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
+    <symbol id="icon-usb" viewBox="0 0 24 24"><path fill="currentColor" d="M11 3h2v6h3l-4 4-4-4h3V3zm-3 14a4 4 0 1 0 8 0 4 4 0 0 0-8 0z"/></symbol>
+  </svg>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;"> 
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/install-windows.html">Install</a>
+        <a href="/update-windows.html">Update</a>
+        <a href="/portable-windows.html" aria-current="page">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/best-extensions.html">Best Extensions</a>
+        <a href="/compare-browsers.html">Compare</a>
+        <a href="/troubleshoot.html">Troubleshoot</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h1 class="h1">LibreWolf Portable for Windows</h1>
+        <p class="lead">Run a privacy-first browser from a USB drive. Learn when to choose a portable setup, where the profile lives, and how to keep it updated.</p>
+
+        <div class="toc" aria-label="On this page">
+          <a href="#overview">Overview</a>
+          <a href="#proscons">Portable vs Installed</a>
+          <a href="#usb">Run from USB</a>
+          <a href="#profile">Profile location</a>
+          <a href="#update">Update a portable copy</a>
+          <a href="#next">Next steps</a>
+        </div>
+
+        <div id="overview" class="section">
+          <h3>What is LibreWolf Portable?</h3>
+          <p class="note">A portable build runs without a traditional installer and can live entirely on removable storage. It leaves a minimal footprint on the host system and is ideal for shared or locked‑down PCs.</p>
+        </div>
+
+        <div id="proscons" class="section">
+          <h3>Portable vs Installed</h3>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+            <div class="card" style="padding:12px">
+              <strong>Portable — pros</strong>
+              <ul style="margin:6px 0 0 18px">
+                <li>Lives on USB or a separate folder</li>
+                <li>Keeps data together for easy backup/move</li>
+                <li>Minimal host changes</li>
+              </ul>
+            </div>
+            <div class="card" style="padding:12px">
+              <strong>Portable — cons</strong>
+              <ul style="margin:6px 0 0 18px">
+                <li>Manual updates</li>
+                <li>Potentially slower on cheap USB sticks</li>
+                <li>No system-level integration by default</li>
+              </ul>
+            </div>
+          </div>
+          <p class="note" style="margin-top:8px">If you want the easiest setup and system integration, use the standard installer below.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+            <button class="btn btn-primary" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe')">
+              <svg width="18" height="18"><use href="#icon-download"/></svg>
+              Download official installer
+            </button>
+            <a class="btn btn-ghost" href="/install-windows.html">Install guide</a>
+          </div>
+        </div>
+
+        <div id="usb" class="section">
+          <h3>Run LibreWolf from a USB drive</h3>
+          <ol style="margin:0 0 0 18px">
+            <li>Place your LibreWolf folder on a fast USB 3.0 flash drive or external SSD.</li>
+            <li>Launch the browser directly from the folder on the USB drive.</li>
+            <li>Keep the USB plugged in while using the browser to avoid data loss.</li>
+          </ol>
+          <p class="note" style="margin-top:8px">Performance depends on USB speed. For best results, prefer USB 3.0 or better.</p>
+        </div>
+
+        <div id="profile" class="section">
+          <h3>Where is my profile?</h3>
+          <p class="note">Portable setups are typically configured to keep the user profile alongside the executable folder. On first run, verify via the in‑browser profile manager that your profile directory resides within your portable folder. This keeps bookmarks, extensions, and settings truly portable.</p>
+          <ul style="margin:6px 0 0 18px">
+            <li>Back up the profile folder regularly (especially before manual updates).</li>
+            <li>Avoid running the same profile simultaneously in multiple Windows sessions.</li>
+          </ul>
+        </div>
+
+        <div id="update" class="section">
+          <h3>Update a portable copy</h3>
+          <ul style="margin:6px 0 0 18px">
+            <li>Close the browser and back up your portable folder.</li>
+            <li>Replace the application files with the new release while keeping your profile folder intact.</li>
+            <li>Reopen the browser and confirm the version in About LibreWolf.</li>
+          </ul>
+          <p class="note" style="margin-top:8px">Prefer a simpler path? Use the standard installer and follow the <a href="/update-windows.html">Windows update guide</a>.</p>
+        </div>
+
+        <div id="next" class="section">
+          <h3>Next steps</h3>
+          <ul style="margin:6px 0 0 18px">
+            <li><a href="/best-extensions.html">Best privacy add‑ons for Windows</a></li>
+            <li><a href="/drm-widevine.html">Enable Widevine / fix streaming</a></li>
+            <li><a href="/troubleshoot.html">Troubleshoot common issues</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <aside class="card" aria-labelledby="sidebar-title">
+        <h2 id="sidebar-title" style="margin-top:0">Prefer a stable install?</h2>
+        <p class="meta">Official Windows installer • Version: <strong>150.0.1‑1</strong> • Platform: <strong>x86_64</strong></p>
+        <div style="margin-top:8px">
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe')">
+            <svg width="18" height="18"><use href="#icon-download"/></svg>
+            Download installer
+          </button>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+        <div class="meta">Helpful links</div>
+        <ul style="margin:6px 0 0 18px;color:var(--muted)">
+          <li><a href="/install-windows.html">Clean install guide</a></li>
+          <li><a href="/update-windows.html">Windows update methods</a></li>
+          <li><a href="/drm-widevine.html">Fix DRM & streaming</a></li>
+        </ul>
+        <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+        <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-cookies.html" style="color:var(--muted)">Privacy & Cookies</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Cookie banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px">
+      <svg width="28" height="28"><use href="#icon-shield"/></svg>
+    </div>
+    <div class="cookie-text">
+      We use a minimal set of cookies to provide analytics and improve this site. Analytics are disabled until you Accept. No tracking cookies are set if you Decline.
+      <div style="margin-top:8px;font-size:0.92rem"><a href="/privacy-cookies.html">Privacy & Cookies</a></div>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn btn-primary" id="cookie-accept">Accept</button>
+      <button class="btn btn-ghost" id="cookie-decline">Decline</button>
+      <button class="btn" id="cookie-close" aria-label="Close cookie dialog">Close</button>
+    </div>
+  </div>
+
+  <!-- Minimal JS: consent, download events, JSON-LD injection, last-modified -->
+  <script>
+    (function(){
+      const DOWNLOAD_FILE = 'librewolf-150.0.1-1-windows-x86_64-setup.exe';
+      const DOWNLOAD_URL = 'https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe';
+
+      // Cookie consent handling
+      const banner = document.getElementById('cookie-banner');
+      const acceptBtn = document.getElementById('cookie-accept');
+      const declineBtn = document.getElementById('cookie-decline');
+      const closeBtn = document.getElementById('cookie-close');
+
+      function setConsent(state){
+        localStorage.setItem('site_cookie_consent', state);
+        if(state === 'granted'){
+          try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
+          try{ gtag('config','G-PENKWJKN66'); }catch(e){}
+        } else {
+          try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
+        }
+        hideBanner();
+      }
+      function hideBanner(){ banner.style.display = 'none'; }
+
+      const stored = localStorage.getItem('site_cookie_consent');
+      if(!stored){ banner.style.display = 'flex'; }
+
+      acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
+      declineBtn.addEventListener('click',function(){ setConsent('denied'); });
+      closeBtn.addEventListener('click',function(){ setConsent('dismissed'); });
+
+      // Download handler with GA event (only if consent granted)
+      window.handleDownload = function(filename, url){
+        const consent = localStorage.getItem('site_cookie_consent');
+        if(consent === 'granted'){
+          try{ gtag('event','file_download', { event_category:'downloads', event_label: filename, file_url: url }); }catch(e){ console.warn('gtag not ready', e); }
+        }
+        window.location.href = url;
+      };
+
+      // Last modified display
+      const lm = document.getElementById('last-modified');
+      try{
+        const dm = document.lastModified ? new Date(document.lastModified) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+
+      // JSON-LD: HowTo + SoftwareApplication + Breadcrumb + FAQ
+      function injectJsonLd(){
+        const ld = {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type":"BreadcrumbList",
+              "itemListElement":[
+                {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"},
+                {"@type":"ListItem","position":2,"name":"Portable","item":"https://librewolf-windows.github.io/portable-windows.html"}
+              ]
+            },
+            {
+              "@type":"SoftwareApplication",
+              "@id":"https://librewolf-windows.github.io/#software",
+              "name":"LibreWolf",
+              "applicationCategory":"Browser",
+              "operatingSystem":"Windows 11; Windows 10",
+              "softwareVersion":"150.0.1-1",
+              "downloadUrl":"https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe",
+              "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock" },
+              "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"},
+              "dateModified":(new Date(document.lastModified || Date.now())).toISOString()
+            },
+            {
+              "@type":"HowTo",
+              "name":"Run LibreWolf Portable from a USB drive",
+              "description":"Steps to keep LibreWolf portable and run it from removable storage on Windows.",
+              "totalTime":"PT5M",
+              "step":[
+                {"@type":"HowToStep","name":"Prepare storage","text":"Use a USB 3.0 flash drive or external SSD for better performance."},
+                {"@type":"HowToStep","name":"Place the app folder","text":"Keep the browser folder on the USB drive to ensure portability."},
+                {"@type":"HowToStep","name":"Launch from USB","text":"Run the browser executable directly from the portable folder."},
+                {"@type":"HowToStep","name":"Keep profile portable","text":"Verify that your profile resides in the portable folder for true portability."}
+              ]
+            },
+            {
+              "@type":"FAQPage",
+              "mainEntity":[
+                {"@type":"Question","name":"What is the difference between portable and installed?","acceptedAnswer":{"@type":"Answer","text":"Portable runs from a folder/USB and keeps data together; installed integrates with Windows and receives simpler updates."}},
+                {"@type":"Question","name":"Where is my portable profile stored?","acceptedAnswer":{"@type":"Answer","text":"Portable setups typically store the profile alongside the app folder. Verify using the profile manager on first run."}},
+                {"@type":"Question","name":"Can I run installed and portable side by side?","acceptedAnswer":{"@type":"Answer","text":"Yes, but avoid using the same profile simultaneously. Keep separate profiles for stability."}},
+                {"@type":"Question","name":"How do I update a portable copy?","acceptedAnswer":{"@type":"Answer","text":"Back up your portable folder, then replace application files with the new release while retaining your profile folder."}}
+              ]
+            }
+          ]
+        };
+        const s = document.createElement('script'); s.type='application/ld+json'; s.text = JSON.stringify(ld);
+        document.head.appendChild(s);
+      }
+      injectJsonLd();
+
+    })();
+  </script>
+</body>
+</html>

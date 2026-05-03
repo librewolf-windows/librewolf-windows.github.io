@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Favicon ICO Generator — LibreWolf for Windows</title>
+  <meta name="robots" content="noindex">
+  <style>
+    :root{--bg:#0F172A;--bg2:#0B1220;--text:#E5E7EB;--muted:#94A3B8;--c1:#22D3EE;--c2:#14B8A6;--shadow:0 24px 60px rgba(2,6,23,.8);--font:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font)}
+    .wrap{max-width:920px;margin:24px auto;padding:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .tile{background:rgba(255,255,255,.03);padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.08);text-align:center;box-shadow:var(--shadow)}
+    canvas{image-rendering:pixelated}
+    .tools{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .btn{background:linear-gradient(90deg,var(--c1),var(--c2));color:#031f23;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--text);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .note{color:var(--muted);text-align:center;margin:8px 0 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 style="margin:0 0 10px">Favicon ICO Generator</h1>
+    <p class="note">Exports a multi-size favicon.ico (16×16, 32×32, 48×48) matching the site palette and the wolf‑trace motif.</p>
+    <div class="grid">
+      <div class="tile"><div>48×48</div><canvas id="c48" width="48" height="48" aria-label="Preview 48x48"></canvas></div>
+      <div class="tile"><div>32×32</div><canvas id="c32" width="32" height="32" aria-label="Preview 32x32"></canvas></div>
+      <div class="tile"><div>16×16</div><canvas id="c16" width="16" height="16" aria-label="Preview 16x16"></canvas></div>
+    </div>
+    <div class="tools">
+      <button class="btn" id="export">Export favicon.ico</button>
+      <a class="ghost" href="/" title="Back to site">Back to site</a>
+    </div>
+    <p class="note">After export, place <strong>favicon.ico</strong> in your site root. Modern browsers will use it alongside favicon.svg.</p>
+  </div>
+
+  <script>
+    (function(){
+      function drawIcon(ctx, size){
+        const w = size, h = size; ctx.clearRect(0,0,w,h);
+        const g = ctx.createLinearGradient(0,0,0,h);
+        g.addColorStop(0,'#0F172A'); g.addColorStop(1,'#071121');
+        ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+        // glow
+        const rg1 = ctx.createRadialGradient(w*0.7,h*0.3,0,w*0.7,h*0.3,w*0.5);
+        rg1.addColorStop(0,'rgba(34,211,238,0.22)'); rg1.addColorStop(1,'rgba(34,211,238,0)');
+        ctx.fillStyle = rg1; ctx.beginPath(); ctx.arc(w*0.7,h*0.3,w*0.5,0,Math.PI*2); ctx.fill();
+        // wolf trace (scaled)
+        ctx.lineCap='round'; ctx.lineJoin='round';
+        ctx.strokeStyle='#22D3EE'; ctx.lineWidth = Math.max(1, size/12);
+        ctx.beginPath(); ctx.moveTo(w*0.2,h*0.7); ctx.bezierCurveTo(w*0.4,h*0.35,w*0.65,h*0.25,w*0.85,h*0.2); ctx.stroke();
+        ctx.strokeStyle='#14B8A6'; ctx.lineWidth = Math.max(1, size/16); ctx.globalAlpha=0.95;
+        ctx.beginPath(); ctx.moveTo(w*0.24,h*0.78); ctx.bezierCurveTo(w*0.5,h*0.55,w*0.75,h*0.5,w*0.9,h*0.49); ctx.stroke(); ctx.globalAlpha=1;
+        // subtle highlight
+        if(size>=32){ ctx.fillStyle='rgba(255,255,255,0.06)'; ctx.beginPath(); ctx.ellipse(w*0.35,h*0.3, w*0.15, h*0.09, Math.PI/10,0,Math.PI*2); ctx.fill(); }
+      }
+
+      const c48 = document.getElementById('c48');
+      const c32 = document.getElementById('c32');
+      const c16 = document.getElementById('c16');
+      [c48,c32,c16].forEach(c=>drawIcon(c.getContext('2d'), c.width));
+
+      function canvasToPNGBytes(canvas){
+        const dataURL = canvas.toDataURL('image/png');
+        const b64 = dataURL.split(',')[1];
+        const bin = atob(b64);
+        const len = bin.length;
+        const bytes = new Uint8Array(len);
+        for(let i=0;i<len;i++){ bytes[i] = bin.charCodeAt(i); }
+        return bytes;
+      }
+
+      function buildICO(images){
+        // ICO header: 6 bytes
+        const n = images.length;
+        const header = new Uint8Array(6);
+        const dvh = new DataView(header.buffer);
+        dvh.setUint16(0, 0, true);   // reserved
+        dvh.setUint16(2, 1, true);   // type 1 = ICO
+        dvh.setUint16(4, n, true);   // count
+
+        // Directory entries: 16 bytes each
+        const dir = new Uint8Array(16*n);
+        const dvd = new DataView(dir.buffer);
+        let offset = 6 + 16*n;
+        const chunks = [];
+        images.forEach((img, i) => {
+          const w = img.size; const h = img.size;
+          const png = img.bytes; const size = png.length;
+          const base = i*16;
+          dir[base+0] = (w===256)?0: w; // width byte
+          dir[base+1] = (h===256)?0: h; // height byte
+          dir[base+2] = 0;             // color count
+          dir[base+3] = 0;             // reserved
+          dvd.setUint16(base+4, 1, true);   // planes
+          dvd.setUint16(base+6, 32, true);  // bit count
+          dvd.setUint32(base+8, size, true);// bytes in resource
+          dvd.setUint32(base+12, offset, true); // offset
+          chunks.push(png);
+          offset += size;
+        });
+
+        // Concatenate
+        const total = 6 + 16*n + chunks.reduce((a,b)=>a+b.length,0);
+        const out = new Uint8Array(total);
+        out.set(header,0); out.set(dir,6);
+        let pos = 6 + 16*n;
+        chunks.forEach(ch=>{ out.set(ch, pos); pos += ch.length; });
+        return new Blob([out], { type: 'image/x-icon' });
+      }
+
+      document.getElementById('export').addEventListener('click', () => {
+        const imgs = [
+          { size:48, bytes: canvasToPNGBytes(c48) },
+          { size:32, bytes: canvasToPNGBytes(c32) },
+          { size:16, bytes: canvasToPNGBytes(c16) }
+        ];
+        const ico = buildICO(imgs);
+        const url = URL.createObjectURL(ico);
+        const a = document.createElement('a');
+        a.download = 'favicon.ico';
+        a.href = url; a.click();
+        setTimeout(()=>URL.revokeObjectURL(url), 2000);
+      });
+    })();
+  </script>
+</body>
+</html>

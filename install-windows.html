@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Install LibreWolf on Windows 11/10 — Clean Setup Guide</title>
+  <meta name="description" content="Step-by-step guide to install LibreWolf on Windows 11/10. Safe download, clean setup, first-run tips, and quick fixes.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/install-windows.html">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Install LibreWolf on Windows 11/10 — Clean Setup Guide">
+  <meta property="og:description" content="Safe install of LibreWolf on Windows with a direct official installer and best-practice tips.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/install-windows.html">
+  <meta property="og:image" content="/og-librewolf-windows.png">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F172A">
+
+  <!-- GA4: default denied until consent is granted -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('consent', 'default', { 'analytics_storage': 'denied' });
+    // will call gtag('config','G-PENKWJKN66') after Accept
+  </script>
+
+  <!-- Single embedded style; high-contrast palette; responsive grid/flex; focus-visible styles. -->
+  <style>
+    :root{
+      --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB;
+      --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937;
+      --radius:10px; --max-width:1100px; --container-pad:18px;
+      --focus: 3px solid rgba(34,211,238,0.18); --shadow: 0 6px 18px rgba(2,6,23,0.6);
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+    a{color:var(--accent);text-decoration:none}
+    a:focus{outline:none;box-shadow:var(--focus)}
+
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
+
+    main{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-top:22px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.8rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin:0 0 16px}
+
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .btn:focus{outline:none;box-shadow:var(--focus)}
+
+    .step{padding:12px;border:1px dashed rgba(255,255,255,0.06);border-radius:10px;margin-bottom:10px}
+    .step h3{margin:0 0 6px;font-size:1.05rem}
+    .note{color:var(--muted);font-size:0.95rem}
+
+    .toc{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .toc a{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:0.9rem}
+    .toc a:hover{color:var(--text)}
+
+    aside h2{margin-top:0}
+    .meta{color:var(--muted);font-size:0.95rem}
+
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+    /* Cookie banner */
+    .cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;background:var(--surface);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(2,6,23,0.7);z-index:9999}
+    .cookie-text{flex:1;color:var(--muted)}
+    .cookie-actions{display:flex;gap:10px}
+    .cookie-actions .btn{padding:8px 12px;font-size:0.95rem}
+
+    /* responsive */
+    @media (max-width:900px){
+      main{grid-template-columns:1fr}
+      .card{padding:16px}
+    }
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+
+  <!-- SVG sprite -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-download" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10m0 0 4-4m-4 4-4-4M5 21h14v-2H5v2z"/></symbol>
+    <symbol id="icon-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3.5l8.5-1.5V11H3V3.5zm9.5-1.5L21 3v8.5H12.5V2zM3 12.5l8.5-1.5V22H3v-9.5zm9.5-1.5L21 11v9l-8.5 1.5V11z"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7h2v2h-2zM11 11h2v6h-2zM12 2a10 10 0 100 20 10 10 0 000-20z"/></symbol>
+  </svg>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;"> 
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/install-windows.html" aria-current="page">Install</a>
+        <a href="/update-windows.html">Update</a>
+        <a href="/portable-windows.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/best-extensions.html">Best Extensions</a>
+        <a href="/compare-browsers.html">Compare</a>
+        <a href="/troubleshoot.html">Troubleshoot</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h1 class="h1">How to Install LibreWolf on Windows 11/10</h1>
+        <p class="lead">Clean setup guide for LibreWolf on Windows x86_64. Includes safe download, first‑run tips, and quick links to troubleshooting and updates.</p>
+
+        <div class="toc" aria-label="On this page">
+          <a href="#download">Download</a>
+          <a href="#steps">Step-by-step</a>
+          <a href="#verify">Verify the installer</a>
+          <a href="#firstrun">First run tips</a>
+          <a href="#next">Next steps</a>
+        </div>
+
+        <div id="download" class="step">
+          <h3>Download the official Windows installer</h3>
+          <p class="note">Direct link to the official binary (x86_64). No telemetry, community-built release.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+            <button class="btn btn-primary" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe')">
+              <svg width="18" height="18"><use href="#icon-download"/></svg>
+              Download Installer (150.0.1‑1)
+            </button>
+            <a class="btn btn-ghost" href="/troubleshoot.html">Having issues?</a>
+          </div>
+        </div>
+
+        <div id="steps" class="step">
+          <h3>Step-by-step installation</h3>
+          <ol style="margin:0 0 0 18px">
+            <li>Run the downloaded installer. If prompted by SmartScreen, choose “Run anyway” for trusted builds.</li>
+            <li>Choose the destination folder and confirm the install.</li>
+            <li>Optionally set LibreWolf as your default browser via Windows Settings.</li>
+            <li>Complete the setup and launch LibreWolf.</li>
+            <li>Open “About LibreWolf” to confirm the version <strong>150.0.1‑1</strong>.</li>
+          </ol>
+          <p class="note" style="margin-top:8px">Tip: Close other browsers during installation to import bookmarks or default-app preferences later without conflicts.</p>
+        </div>
+
+        <div id="verify" class="step">
+          <h3>Verify the installer (recommended)</h3>
+          <p class="note">Compare the installer’s checksum with the published hash. Verifying ensures your download is intact and untampered.</p>
+          <ul style="margin:6px 0 0 18px;color:var(--muted)">
+            <li>Check the file name matches: <strong>librewolf-150.0.1-1-windows-x86_64-setup.exe</strong></li>
+            <li>Compare the SHA256 hash against the official release notes.</li>
+          </ul>
+        </div>
+
+        <div id="firstrun" class="step">
+          <h3>First run: privacy checks</h3>
+          <ul style="margin:6px 0 0 18px">
+            <li>Telemetry is disabled by default; you don’t need to opt out.</li>
+            <li>If streaming sites don’t play, see <a href="/drm-widevine.html">DRM & Streaming</a> to enable Widevine.</li>
+            <li>Want a minimal footprint? Consider the <a href="/portable-windows.html">portable build</a>.</li>
+          </ul>
+        </div>
+
+        <div id="next" class="step">
+          <h3>What’s next?</h3>
+          <ul style="margin:6px 0 0 18px">
+            <li><a href="/update-windows.html">Keep LibreWolf up to date (winget / scoop / manual)</a></li>
+            <li><a href="/best-extensions.html">Best privacy add‑ons for Windows</a></li>
+            <li><a href="/compare-browsers.html">Compare LibreWolf vs Firefox vs Brave</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <aside class="card" aria-labelledby="sidebar-title">
+        <h2 id="sidebar-title" style="margin-top:0">Quick installer</h2>
+        <p class="meta">Version: <strong>150.0.1‑1</strong> • Platform: <strong>Windows 11/10 (x86_64)</strong></p>
+        <div style="margin-top:8px">
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe')">
+            <svg width="18" height="18"><use href="#icon-download"/></svg>
+            Download now
+          </button>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+        <div class="meta">Requirements</div>
+        <ul style="margin:6px 0 0 18px;color:var(--muted)">
+          <li>Windows 11 or Windows 10, 64‑bit</li>
+          <li>~200 MB free disk space</li>
+          <li>Internet connection</li>
+        </ul>
+        <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+        <div class="meta">Resources</div>
+        <ul style="margin:6px 0 0 18px;color:var(--muted)">
+          <li><a href="/troubleshoot.html">Troubleshooting guide</a></li>
+          <li><a href="/drm-widevine.html">Fix DRM & streaming</a></li>
+          <li><a href="/portable-windows.html">Portable usage</a></li>
+        </ul>
+        <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+        <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-cookies.html" style="color:var(--muted)">Privacy & Cookies</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Cookie banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px">
+      <svg width="28" height="28"><use href="#icon-shield"/></svg>
+    </div>
+    <div class="cookie-text">
+      We use a minimal set of cookies to provide analytics and improve this site. Analytics are disabled until you Accept. No tracking cookies are set if you Decline.
+      <div style="margin-top:8px;font-size:0.92rem"><a href="/privacy-cookies.html">Privacy & Cookies</a></div>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn btn-primary" id="cookie-accept">Accept</button>
+      <button class="btn btn-ghost" id="cookie-decline">Decline</button>
+      <button class="btn" id="cookie-close" aria-label="Close cookie dialog">Close</button>
+    </div>
+  </div>
+
+  <!-- Minimal JS: consent, download events, JSON-LD injection, last-modified -->
+  <script>
+    (function(){
+      const DOWNLOAD_FILE = 'librewolf-150.0.1-1-windows-x86_64-setup.exe';
+      const DOWNLOAD_URL = 'https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe';
+
+      // Cookie consent handling
+      const banner = document.getElementById('cookie-banner');
+      const acceptBtn = document.getElementById('cookie-accept');
+      const declineBtn = document.getElementById('cookie-decline');
+      const closeBtn = document.getElementById('cookie-close');
+
+      function setConsent(state){
+        localStorage.setItem('site_cookie_consent', state);
+        if(state === 'granted'){
+          try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
+          try{ gtag('config','G-PENKWJKN66'); }catch(e){}
+        } else {
+          try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
+        }
+        hideBanner();
+      }
+      function hideBanner(){ banner.style.display = 'none'; }
+
+      const stored = localStorage.getItem('site_cookie_consent');
+      if(!stored){ banner.style.display = 'flex'; }
+
+      acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
+      declineBtn.addEventListener('click',function(){ setConsent('denied'); });
+      closeBtn.addEventListener('click',function(){ setConsent('dismissed'); });
+
+      // Download handler with GA event (only if consent granted)
+      window.handleDownload = function(filename, url){
+        const consent = localStorage.getItem('site_cookie_consent');
+        if(consent === 'granted'){
+          try{ gtag('event','file_download', { event_category:'downloads', event_label: filename, file_url: url }); }catch(e){ console.warn('gtag not ready', e); }
+        }
+        window.location.href = url;
+      };
+
+      // Last modified display
+      const lm = document.getElementById('last-modified');
+      try{
+        const dm = document.lastModified ? new Date(document.lastModified) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+
+      // JSON-LD: HowTo + SoftwareApplication + Breadcrumb + FAQ
+      function injectJsonLd(){
+        const ld = {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type":"BreadcrumbList",
+              "itemListElement":[
+                {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"},
+                {"@type":"ListItem","position":2,"name":"Install","item":"https://librewolf-windows.github.io/install-windows.html"}
+              ]
+            },
+            {
+              "@type":"SoftwareApplication",
+              "@id":"https://librewolf-windows.github.io/#software",
+              "name":"LibreWolf",
+              "applicationCategory":"Browser",
+              "operatingSystem":"Windows 11; Windows 10",
+              "softwareVersion":"150.0.1-1",
+              "downloadUrl":"https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe",
+              "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock" },
+              "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"},
+              "dateModified":(new Date(document.lastModified || Date.now())).toISOString()
+            },
+            {
+              "@type":"HowTo",
+              "name":"Install LibreWolf on Windows 11/10",
+              "description":"Clean setup guide for LibreWolf on Windows x86_64 using the official installer.",
+              "totalTime":"PT5M",
+              "step":[
+                {"@type":"HowToStep","name":"Download the installer","text":"Download the official Windows x86_64 installer."},
+                {"@type":"HowToStep","name":"Run the installer","text":"Open the downloaded file and proceed through the wizard."},
+                {"@type":"HowToStep","name":"Choose destination","text":"Select the installation folder and confirm."},
+                {"@type":"HowToStep","name":"Set default (optional)","text":"Optionally set LibreWolf as your default browser in Windows Settings."},
+                {"@type":"HowToStep","name":"Verify version","text":"Open About LibreWolf to verify version 150.0.1-1."}
+              ]
+            },
+            {
+              "@type":"FAQPage",
+              "mainEntity":[
+                {"@type":"Question","name":"Is LibreWolf free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. LibreWolf is a free and open-source browser."}},
+                {"@type":"Question","name":"Does LibreWolf auto-update on Windows?","acceptedAnswer":{"@type":"Answer","text":"Auto-update may be disabled; use manual updates or package managers like winget/scoop as described in the Update guide."}},
+                {"@type":"Question","name":"How do I set LibreWolf as default browser?","acceptedAnswer":{"@type":"Answer","text":"Go to Windows Settings → Apps → Default apps and select LibreWolf for HTTP/HTTPS and .htm/.html associations."}},
+                {"@type":"Question","name":"Streaming doesn’t work — what now?","acceptedAnswer":{"@type":"Answer","text":"Enable Widevine/DRM as shown in the DRM & Streaming guide if a site requires it."}}
+              ]
+            }
+          ]
+        };
+        const s = document.createElement('script'); s.type='application/ld+json'; s.text = JSON.stringify(ld);
+        document.head.appendChild(s);
+      }
+      injectJsonLd();
+
+    })();
+  </script>
+</body>
+</html>

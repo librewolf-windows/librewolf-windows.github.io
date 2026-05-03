@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Apple Touch Icon — LibreWolf for Windows</title>
+  <meta name="robots" content="noindex">
+  <style>
+    :root{--bg:#0F172A;--bg2:#0B1220;--text:#E5E7EB;--muted:#94A3B8;--c1:#22D3EE;--c2:#14B8A6;--shadow:0 24px 60px rgba(2,6,23,.8);--font:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font)}
+    .wrap{max-width:860px;margin:24px auto;padding:18px}
+    .frame{width:220px;height:220px;margin:0 auto 14px;border-radius:24px;display:grid;place-items:center;background:rgba(255,255,255,.03);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.08)}
+    canvas{width:180px;height:180px;border-radius:32px}
+    .tools{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    button,a{cursor:pointer}
+    .btn{background:linear-gradient(90deg,var(--c1),var(--c2));color:#031f23;border:0;padding:10px 14px;border-radius:10px;font-weight:700}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--text);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .note{color:var(--muted);text-align:center;margin:8px 0 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="frame"><canvas id="icon" width="180" height="180" aria-label="Apple touch icon preview"></canvas></div>
+    <div class="tools">
+      <button class="btn" id="export">Export PNG (180×180)</button>
+      <a class="ghost" href="/" title="Back to site">Back to site</a>
+    </div>
+    <p class="note">After export, place the file in your site root as <strong>apple-touch-icon.png</strong>.</p>
+  </div>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('icon');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      // Rounded rect helper
+      function roundRect(x,y,w,h,r){
+        ctx.beginPath();
+        ctx.moveTo(x+r, y);
+        ctx.arcTo(x+w, y, x+w, y+h, r);
+        ctx.arcTo(x+w, y+h, x, y+h, r);
+        ctx.arcTo(x, y+h, x, y, r);
+        ctx.arcTo(x, y, x+w, y, r);
+        ctx.closePath();
+      }
+
+      // Background gradient
+      const g = ctx.createLinearGradient(0,0,0,h);
+      g.addColorStop(0,'#0F172A');
+      g.addColorStop(1,'#071121');
+      roundRect(0,0,w,h,32);
+      ctx.fillStyle = g; ctx.fill();
+
+      // Subtle glow spots
+      const rg1 = ctx.createRadialGradient(120,50,0,120,50,90);
+      rg1.addColorStop(0,'rgba(34,211,238,0.22)');
+      rg1.addColorStop(1,'rgba(34,211,238,0)');
+      ctx.fillStyle = rg1; ctx.beginPath(); ctx.arc(120,50,90,0,Math.PI*2); ctx.fill();
+
+      const rg2 = ctx.createRadialGradient(50,150,0,50,150,80);
+      rg2.addColorStop(0,'rgba(20,184,166,0.18)');
+      rg2.addColorStop(1,'rgba(20,184,166,0)');
+      ctx.fillStyle = rg2; ctx.beginPath(); ctx.arc(50,150,80,0,Math.PI*2); ctx.fill();
+
+      // Wolf trace strokes
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#22D3EE'; ctx.lineWidth = 10;
+      ctx.beginPath(); ctx.moveTo(28,120); ctx.bezierCurveTo(62,60,110,40,150,30); ctx.stroke();
+      ctx.strokeStyle = '#14B8A6'; ctx.lineWidth = 7; ctx.globalAlpha = 0.95;
+      ctx.beginPath(); ctx.moveTo(36,138); ctx.bezierCurveTo(88,96,138,86,168,84); ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Soft highlight
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.beginPath(); ctx.ellipse(70,58,28,16,Math.PI/12,0,Math.PI*2); ctx.fill();
+
+      // Export button logic
+      const btn = document.getElementById('export');
+      btn.addEventListener('click',()=>{
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.download = 'apple-touch-icon.png';
+        a.href = url; a.click();
+      });
+    })();
+  </script>
+</body>
+</html>
