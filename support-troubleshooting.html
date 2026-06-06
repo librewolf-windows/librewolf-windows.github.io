@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Troubleshooting — LibreWolf for Windows</title>
+  <meta name="description" content="Troubleshooting guide for LibreWolf on Windows: installer issues, download problems, playback/DRM errors, profile problems, logs and how to report bugs effectively.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/support-troubleshooting.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="2026-06-06T20:00:00Z">
+
+  <meta property="og:title" content="Troubleshooting — LibreWolf for Windows">
+  <meta property="og:description" content="Troubleshooting guide for LibreWolf on Windows: installer issues, download problems, playback/DRM errors, profile problems, logs and how to report bugs effectively.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/support-troubleshooting.html">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --pad:18px; --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--pad)}
+    header{display:flex;align-items:center;justify-content:space-between}
+    nav a{color:var(--muted);padding:8px;border-radius:8px;text-decoration:none}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:10px;box-shadow:var(--shadow)}
+    h1{margin:0 0 8px;font-size:1.7rem}
+    .lead{color:var(--muted);margin-bottom:16px}
+    h2{color:var(--text);margin:14px 0}
+    p{margin:8px 0;color:var(--muted)}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;overflow:auto;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('consent','default',{ 'analytics_storage':'denied' });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:10px;background:#0B1220;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div style="font-weight:700">LibreWolf for Windows</div><div style="font-size:0.9rem;color:var(--muted)">Troubleshooting & support</div></div>
+      </div>
+      <nav aria-label="Main"><a href="/index.html">Home</a> <a href="/download.html">Download</a> <a href="/install.html">Install</a> <a href="/faq.html">FAQ</a> <a href="/privacy-telemetry.html">Privacy</a></nav>
+    </header>
+
+    <main style="margin-top:18px">
+      <div class="grid">
+        <section class="card">
+          <h1>Troubleshooting LibreWolf on Windows</h1>
+          <p class="lead">Practical, ordered steps to diagnose and fix common problems: downloads not starting, installer issues, crashes, DRM errors, profile problems and antivirus false positives. Follow the steps in order — include exact error messages when asking for help.</p>
+
+          <h2>1. Download problems</h2>
+          <p>If the download link doesn't work, first try the direct mirror on the <a href="/download.html">Download</a> page. For JavaScript-disabled environments use the noscript direct link on that page.</p>
+          <p>Steps:</p>
+          <ol class="muted">
+            <li>Open the <a href="/download.html">Download</a> page and use the direct official mirror link.</li>
+            <li>Verify the SHA256 checksum (PowerShell: <code>Get-FileHash -Path C:\path\to\file -Algorithm SHA256</code>).</li>
+            <li>If download is blocked by network policies, try a different network or use a download manager that supports resuming.</li>
+            <li>If redirect/captcha flow fails, the fallback links on the Download page will lead you to the file.</li>
+          </ol>
+
+          <h2>2. Installer fails or is blocked by SmartScreen/Defender</h2>
+          <p>Typical causes: SmartScreen flags new binaries, Defender quarantines based on heuristics, or missing permissions.</p>
+          <ol class="muted">
+            <li>Verify SHA256 before running. If checksum matches, proceed cautiously.</li>
+            <li>Right-click → "Properties" → "Unblock" if Windows marks the file as downloaded from the Internet.</li>
+            <li>Use "More info" → "Run anyway" on SmartScreen prompts if you trust the source.</li>
+            <li>If Defender quarantined the file, restore it and add an exclusion for the installer folder during installation; report false positives to Microsoft if necessary.</li>
+            <li>For enterprise machines, request an exception from IT or use the portable build if admin rights are restricted.</li>
+          </ol>
+
+          <h2>3. Installer completes but LibreWolf crashes or won't start</h2>
+          <p>Collect diagnostic info and try a clean start:</p>
+          <ol class="muted">
+            <li>Start LibreWolf with a new profile: <pre>librewolf.exe -P</pre> and create a temporary profile.</li>
+            <li>Run in Troubleshoot/Safe mode to disable extensions: <pre>librewolf.exe -safe-mode</pre></li>
+            <li>Check %APPDATA% and %LOCALAPPDATA% for crash reports and logs. Open about:support in the browser when possible to gather technical details.</li>
+            <li>Temporarily disable antivirus/firewall to rule out interference.</li>
+          </ol>
+
+          <h2>4. Portable build issues</h2>
+          <p>Common problems: profile not writable, missing files after extraction, or extensions behaving unexpectedly.</p>
+          <ol class="muted">
+            <li>Ensure the portable folder is on a writable drive. Some USB drives mount as read-only.</li>
+            <li>Do not run directly from compressed archives — extract fully before running.</li>
+            <li>If settings fail to persist, check permissions on the profile subfolder inside the portable directory.</li>
+          </ol>
+
+          <h2>5. DRM / Playback errors (Netflix, Prime, etc.)</h2>
+          <p>See the DRM guide — but quick checklist:</p>
+          <ol class="muted">
+            <li>Enable EME/Widevine preferences (see <a href="/drm-widevine.html">DRM & Streaming</a>).</li>
+            <li>Confirm Widevine CDM installed (about:support → Content Decryption Modules).</li>
+            <li>Try a clean profile and disable privacy extensions that may block CDM downloads.</li>
+            <li>If specific error codes appear (Netflix), note them and consult the Netflix troubleshooting guide on this site.</li>
+          </ol>
+
+          <h2>6. Extension & site compatibility</h2>
+          <p>If websites behave incorrectly, check extensions and privacy prefs:</p>
+          <ol class="muted">
+            <li>Open in a clean profile to confirm whether the issue is profile/extension related.</li>
+            <li>Temporarily disable anti-fingerprinting or aggressive tracker blockers — some sites require certain features to work.</li>
+            <li>Use the Web Console (F12) to capture errors and network failures for debugging.</li>
+          </ol>
+
+          <h2>7. How to collect useful logs and report a bug</h2>
+          <p>When you file an issue, include clear steps to reproduce, exact version, OS, and any logs. Useful items to attach:</p>
+          <ul class="muted">
+            <li>LibreWolf version (Help → About) and build number.</li>
+            <li>OS version (Settings → System → About).</li>
+            <li>about:support page export (copy/paste output or take a screenshot).</li>
+            <li>Console output or errors from developer tools (F12 → Console).</li>
+            <li>Crash report files from %LOCALAPPDATA% or the CrashReports folder if present.</li>
+            <li>Exact error messages and steps to reproduce.</li>
+          </ul>
+          <p>Where to report: the project's <a href="/about-github.html">GitHub</a> is the preferred channel — create an issue with the above details and any attachments (logs, screenshots).</p>
+
+          <h2>8. Winget & package-manager related issues</h2>
+          <p>If winget install fails:</p>
+          <ol class="muted">
+            <li>Run <pre>winget source update</pre> and <pre>winget search librewolf</pre> to refresh manifests.</li>
+            <li>Check network/proxy restrictions; winget requires access to the source repository.</li>
+            <li>Validate the package ID and publisher before installing.</li>
+          </ol>
+
+          <h2>9. Performance & memory issues</h2>
+          <p>For slowness or high memory usage:</p>
+          <ol class="muted">
+            <li>Restart the browser and test in a clean profile.</li>
+            <li>Disable or remove heavy extensions and tabs that use many resources.</li>
+            <li>Check for problematic plugins or sites in Task Manager (Shift+Esc in browser) and in Windows Task Manager.</li>
+          </ol>
+
+          <h2>10. When to use portable vs fresh install for troubleshooting</h2>
+          <p>Portable runs isolated and is useful for testing; if an installed copy misbehaves, try extracting a portable build to a temp folder and see if the issue reproduces — this helps isolate system-level interference.</p>
+
+          <h2>11. Quick recovery steps</h2>
+          <ol class="muted">
+            <li>Create a backup of your profile (copy profile folder).</li>
+            <li>Create a new temporary profile and test.</li>
+            <li>Reinstall using the installer from the <a href="/download.html">Download</a> page.</li>
+            <li>If nothing helps, collect logs (see section 7) and open an issue on GitHub.</li>
+          </ol>
+
+          <h2>12. Contact & extra help</h2>
+          <p>If you need help beyond these steps, include the items from section 7 and file an issue on the project's <a href="/about-github.html">GitHub</a>. For urgent or private disclosures (security issues), follow the security contact procedure on the project repo.</p>
+
+        </section>
+
+        <aside class="card">
+          <h3 style="margin-top:0">Quick commands & paths</h3>
+          <div class="muted">PowerShell checksum:</div>
+          <pre class="muted">Get-FileHash -Path C:\path\to\file -Algorithm SHA256</pre>
+          <div style="margin-top:8px" class="muted">Start with new profile:</div>
+          <pre class="muted">librewolf.exe -P</pre>
+          <div style="margin-top:8px" class="muted">Safe-mode:</div>
+          <pre class="muted">librewolf.exe -safe-mode</pre>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+          <div class="muted">Helpful links</div>
+          <ul style="padding-left:18px;margin-top:8px;color:var(--muted)">
+            <li><a href="/download.html">Download & verification</a></li>
+            <li><a href="/drm-widevine.html">DRM & Streaming</a></li>
+            <li><a href="/install.html">Install guide</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+          </ul>
+
+          <div style="margin-top:12px" class="muted">Last updated:</div>
+          <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+        </aside>
+      </div>
+
+      <footer style="margin-top:18px;color:var(--muted)">Unofficial page • Not affiliated with the LibreWolf project • <a href="/privacy-telemetry.html">Privacy & Telemetry</a></footer>
+    </main>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"WebPage","@id":"https://librewolf-windows.github.io/support-troubleshooting.html","url":"https://librewolf-windows.github.io/support-troubleshooting.html","name":"Troubleshooting","description":"Troubleshooting steps for LibreWolf on Windows."},
+      {"@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"Installer blocked by SmartScreen — what do I do?","acceptedAnswer":{"@type":"Answer","text":"Verify checksum, then use 'More info' -> 'Run anyway' if you trust the file. Use portable build as fallback."}},
+        {"@type":"Question","name":"How to collect logs?","acceptedAnswer":{"@type":"Answer","text":"Export about:support, capture console logs (F12), and include crash reports from %LOCALAPPDATA% when filing an issue."}}
+      ]}
+    ]
+  }
+  </script>
+
+  <script>
+    (function(){
+      const lmDisplay = document.getElementById('last-modified');
+      try{
+        const built = document.querySelector('meta[name="build-date"]')?.content || document.lastModified;
+        const d = new Date(built);
+        lmDisplay.textContent = d.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lmDisplay.textContent = 'Unknown'; }
+    })();
+  </script>
+</body>
+</html>

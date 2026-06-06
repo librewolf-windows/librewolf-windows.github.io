@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Releases & Changelog — LibreWolf for Windows</title>
+  <meta name="description" content="Official Windows releases and changelog for LibreWolf builds. Download binaries, verify checksums, and read release notes for each version.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/news-releases.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
+  <meta property="og:title" content="Releases & Changelog — LibreWolf for Windows">
+  <meta property="og:description" content="Official Windows releases and changelog for LibreWolf builds. Download binaries, verify checksums, and read release notes for each version.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/news-releases.html">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.6rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .releases{display:grid;gap:14px}
+    .release{border:1px solid rgba(255,255,255,0.03);padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+    .rel-meta{color:var(--muted);font-size:0.95rem;margin-bottom:8px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .columns{grid-template-columns:1fr} }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"CollectionPage",
+    "name":"Releases & Changelog — LibreWolf for Windows",
+    "description":"Release list and notes for LibreWolf Windows builds.",
+    "mainEntity": [
+      {
+        "@type":"Article",
+        "headline":"LibreWolf 150.0.1-1 — Windows release",
+        "datePublished":"2026-06-06",
+        "version":"150.0.1-1",
+        "author": {"@type":"Organization","name":"LibreWolf builds mirror"},
+        "articleBody":"Changelog highlights: security fixes from upstream, updated NSS libraries, improved Windows installer behavior. See download link for assets and checksums.",
+        "url":"https://librewolf-windows.github.io/news-releases.html#150.0.1-1"
+      },
+      {
+        "@type":"Article",
+        "headline":"LibreWolf 149.0.0-1 — Previous release",
+        "datePublished":"2026-04-20",
+        "version":"149.0.0-1",
+        "author": {"@type":"Organization","name":"LibreWolf builds mirror"},
+        "articleBody":"Previous release notes: privacy hardening, updated extensions list, packaging improvements.",
+        "url":"https://librewolf-windows.github.io/news-releases.html#149.0.0-1"
+      }
+    ]
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:20px">
+      <section class="card">
+        <h1 class="h1">Releases & Changelog</h1>
+        <p class="lead">Quick answer: Find the latest Windows builds, release notes and checksums below. Click a release to expand details and download assets. Always verify checksums before running installers.</p>
+
+        <div class="releases" style="margin-top:12px">
+
+          <article class="release" id="150.0.1-1">
+            <div class="rel-meta">Version <strong>150.0.1-1</strong> — Published <time datetime="2026-06-06">Jun 6, 2026</time></div>
+            <h2 style="margin:6px 0;color:var(--text)">LibreWolf 150.0.1-1 — Windows release</h2>
+            <p style="color:var(--muted)">Highlights: security updates from upstream Firefox, NSS library updates, Windows installer fixes. Packaging improvements and checksum verification included.</p>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="/download.html" aria-label="Download 150.0.1-1">Download & Checksums</a>
+              <a class="btn" href="#" style="background:transparent;border:1px solid var(--border);color:var(--muted)">Release notes (full)</a>
+            </div>
+          </article>
+
+          <article class="release" id="149.0.0-1">
+            <div class="rel-meta">Version <strong>149.0.0-1</strong> — Published <time datetime="2026-04-20">Apr 20, 2026</time></div>
+            <h2 style="margin:6px 0;color:var(--text)">LibreWolf 149.0.0-1</h2>
+            <p style="color:var(--muted)">Highlights: privacy hardening, updated default preferences, packaging tweaks and minor bug fixes.</p>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="/download.html">Download & Checksums</a>
+              <a class="btn" href="#" style="background:transparent;border:1px solid var(--border);color:var(--muted)">Release notes (full)</a>
+            </div>
+          </article>
+
+          <div style="margin-top:6px;color:var(--muted);font-size:0.95rem">Older releases are archived on the project's GitHub releases page. If you need a past artifact, check the GitHub repository or open an issue.</div>
+
+        </div>
+
+        <div style="margin-top:14px;color:var(--muted)">
+          <strong>Checksum verification:</strong> Always verify SHA256 using PowerShell or certutil before running installers. Example:
+          <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);overflow:auto">Get-FileHash .\librewolf-150.0.1-1-windows-x86_64-setup.exe -Algorithm SHA256</pre>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      // Simple enhancement: allow opening release notes in-page (placeholder)
+      document.querySelectorAll('.release .btn').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          if(btn.textContent.indexOf('Release notes') !== -1){
+            e.preventDefault();
+            alert('Full release notes should be linked to a detailed page or GitHub release.');
+          }
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

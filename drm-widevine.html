@@ -3,48 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Fix DRM, Widevine, and Streaming in LibreWolf on Windows</title>
-  <meta name="description" content="Enable Widevine and fix DRM streaming in LibreWolf on Windows. Step-by-step to watch Netflix, Prime Video, Spotify and more — with privacy notes.">
+  <title>Widevine DRM & Streaming — LibreWolf for Windows</title>
+  <meta name="description" content="How to enable and troubleshoot Widevine DRM for LibreWolf on Windows. Steps for Netflix and other streaming services, limitations, and privacy considerations.">
   <link rel="canonical" href="https://librewolf-windows.github.io/drm-widevine.html">
   <meta name="robots" content="index, follow">
+  <meta name="build-date" content="2026-06-06T19:21:45Z">
 
-  <!-- Open Graph / Social -->
-  <meta property="og:title" content="Fix DRM, Widevine, and Streaming in LibreWolf on Windows">
-  <meta property="og:description" content="Step-by-step guide to enable Widevine/DRM and fix Netflix, Prime, Spotify playback in LibreWolf on Windows.">
+  <meta property="og:title" content="Widevine DRM & Streaming — LibreWolf for Windows">
+  <meta property="og:description" content="Guide to enable Widevine DRM in LibreWolf on Windows for Netflix and other streaming services. Troubleshooting tips and safe configuration.">
   <meta property="og:url" content="https://librewolf-windows.github.io/drm-widevine.html">
-  <meta property="og:image" content="/og-librewolf-windows.png">
-  <meta property="og:type" content="article">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
 
   <link rel="icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta name="theme-color" content="#0F172A">
 
-  <!-- GA4: default denied until consent is granted -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date());
-    gtag('consent', 'default', { 'analytics_storage': 'denied' });
-    // will call gtag('config','G-PENKWJKN66') after Accept
-  </script>
-
-  <!-- Single embedded style; high-contrast palette; responsive grid/flex; focus-visible styles. -->
   <style>
-    :root{
-      --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB;
-      --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937;
-      --radius:10px; --max-width:1100px; --container-pad:18px;
-      --focus: 3px solid rgba(34,211,238,0.18); --shadow: 0 6px 18px rgba(2,6,23,0.6);
-      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
     a{color:var(--accent);text-decoration:none}
     a:focus{outline:none;box-shadow:var(--focus)}
-
     .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
     header{display:flex;align-items:center;justify-content:space-between;gap:12px}
     .brand{display:flex;align-items:center;gap:12px}
@@ -53,53 +32,33 @@
     nav{display:flex;gap:10px;flex-wrap:wrap}
     nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
     nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
-
-    main{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-top:22px}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;margin-top:22px}
     .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .h1{font-size:1.8rem;margin:0 0 10px}
-    .lead{color:var(--muted);margin:0 0 16px}
-
+    .h1{font-size:1.7rem;margin:0}
+    .lead{color:var(--muted);margin-bottom:16px}
     .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
     .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
-    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
-    .btn:focus{outline:none;box-shadow:var(--focus)}
-
-    .section{padding:12px;border:1px dashed rgba(255,255,255,0.06);border-radius:10px;margin-bottom:10px}
-    .section h3{margin:0 0 6px;font-size:1.05rem}
-    .note{color:var(--muted);font-size:0.95rem}
-
-    .toc{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-    .toc a{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:0.9rem}
-    .toc a:hover{color:var(--text)}
-
-    aside h2{margin-top:0}
-    .meta{color:var(--muted);font-size:0.95rem}
-
+    .muted{color:var(--muted)}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;overflow:auto;color:var(--muted)}
+    .content-section{margin-top:14px;color:var(--muted)}
+    .content-section h2{color:var(--text);margin:12px 0}
     footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
-
-    /* Cookie banner */
-    .cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;background:var(--surface);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(2,6,23,0.7);z-index:9999}
-    .cookie-text{flex:1;color:var(--muted)}
-    .cookie-actions{display:flex;gap:10px}
-    .cookie-actions .btn{padding:8px 12px;font-size:0.95rem}
-
-    /* responsive */
-    @media (max-width:900px){
-      main{grid-template-columns:1fr}
-      .card{padding:16px}
-    }
-    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} .card{padding:16px} }
   </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('consent','default',{ 'analytics_storage':'denied' });
+  </script>
 </head>
 <body>
-
-  <!-- SVG sprite -->
   <svg style="display:none" aria-hidden="true">
     <symbol id="icon-download" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10m0 0 4-4m-4 4-4-4M5 21h14v-2H5v2z"/></symbol>
     <symbol id="icon-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3.5l8.5-1.5V11H3V3.5zm9.5-1.5L21 3v8.5H12.5V2zM3 12.5l8.5-1.5V22H3v-9.5zm9.5-1.5L21 11v9l-8.5 1.5V11z"/></symbol>
     <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
-    <symbol id="icon-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></symbol>
-    <symbol id="icon-gear" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3h-2.16a6.99 6.99 0 00-.78-1.88l1.53-1.53-1.41-1.41-1.53 1.53A6.99 6.99 0 0015 5.22V3.06h-2v2.16c-.66.11-1.29.31-1.88.58L9.59 4.27 8.17 5.69l1.53 1.53c-.27.59-.47 1.22-.58 1.88H6v2h2.12c.11.66.31 1.29.58 1.88L7.17 15.5l1.41 1.41 1.53-1.53c.59.27 1.22.47 1.88.58V18h2v-2.12c.66-.11 1.29-.31 1.88-.58l1.53 1.53 1.41-1.41-1.53-1.53c.27-.59.47-1.22.58-1.88h2.16v-2z"/></symbol>
   </svg>
 
   <div class="wrap">
@@ -115,113 +74,88 @@
       </div>
 
       <nav aria-label="Main navigation">
-        <a href="/">Home</a>
-        <a href="/install-windows.html">Install</a>
-        <a href="/update-windows.html">Update</a>
-        <a href="/portable-windows.html">Portable</a>
-        <a href="/drm-widevine.html" aria-current="page">DRM & Streaming</a>
-        <a href="/best-extensions.html">Best Extensions</a>
-        <a href="/compare-browsers.html">Compare</a>
-        <a href="/troubleshoot.html">Troubleshoot</a>
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
       </nav>
     </header>
 
-    <main>
+    <main class="hero" role="main">
       <section class="card">
-        <h1 class="h1">Fix DRM, Widevine, and Streaming</h1>
-        <p class="lead">By default, LibreWolf disables DRM to protect privacy. If you need Netflix, Prime Video, Spotify, or other protected streams, follow the steps below to enable Widevine with minimal exposure.</p>
-
-        <div class="toc" aria-label="On this page">
-          <a href="#understand">Understand DRM</a>
-          <a href="#enable-ui">Enable via Settings (basic)</a>
-          <a href="#enable-advanced">Enable via about:config (advanced)</a>
-          <a href="#site-fixes">Site‑specific fixes</a>
-          <a href="#codecs">Audio/Video codecs</a>
-          <a href="#reset">Reset & clean start</a>
-          <a href="#next">Next steps</a>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <h1 class="h1">Widevine DRM & Streaming</h1>
+            <div class="muted" style="margin-top:6px">How to enable Widevine DRM for LibreWolf on Windows and troubleshoot playback for Netflix, Amazon Prime, Hulu and more.</div>
+          </div>
+          <div>
+            <a class="btn btn-primary" href="/download.html" aria-label="Download LibreWolf for Windows"><svg width="18" height="18" style="vertical-align:middle"><use href="#icon-download"/></svg>&nbsp;Download for Windows</a>
+          </div>
         </div>
 
-        <div id="understand" class="section">
-          <h3>Understand DRM and privacy</h3>
-          <p class="note">DRM (Digital Rights Management) relies on the Widevine Content Decryption Module. Enabling DRM can allow streaming sites to identify your device and may add fingerprinting surface. Keep it off unless you need it.</p>
-        </div>
+        <div class="content-section">
+          <h2>Quick answer</h2>
+          <p>LibreWolf prioritizes privacy and disables some DRM components by default. You can enable Widevine CDM to play DRM-protected content (e.g. Netflix) but expect trade-offs: enabling DRM adds a component that may increase fingerprinting surface. Follow the steps below to enable Widevine safely and troubleshoot common playback issues on Windows.</p>
 
-        <div id="enable-ui" class="section">
-          <h3>Enable Widevine via Settings (basic)</h3>
-          <ol style="margin:0 0 0 18px">
-            <li>Open Settings: type <strong>about:preferences#general</strong> in the address bar.</li>
-            <li>In the “Digital Rights Management (DRM) Content” section, enable <strong>Play DRM‑controlled content</strong>.</li>
-            <li>Restart the browser and revisit the streaming site to trigger Widevine download.</li>
+          <h2>How Widevine works in browsers</h2>
+          <p>Widevine is a Content Decryption Module (CDM) used by many streaming services to enforce DRM. Browsers ship with a mechanism to download and use Widevine from the platform when needed. LibreWolf, being privacy-focused, often disables automatic CDM downloads to reduce remote calls and telemetry. Enabling Widevine typically restores the CDM download or allows you to supply a system copy.</p>
+
+          <h2>Enable Widevine in LibreWolf (step-by-step)</h2>
+          <ol class="muted">
+            <li>Open LibreWolf and go to about:config. Proceed with caution — only change settings you understand.</li>
+            <li>Search for "widevine" and related preferences. Common prefs include media.eme.enabled and drm-related flags. Set media.eme.enabled to true to allow EME (Encrypted Media Extensions).</li>
+            <li>Ensure the browser can download the CDM: set the pref for CDM provider if disabled. In some forks you may need to toggle preferences that allow the CDM to be fetched from Google or to use site-provided CDMs.</li>
+            <li>Restart LibreWolf and navigate to the streaming service to trigger CDM download. If prompted, allow the browser to download the component (or follow manual installation instructions below).</li>
           </ol>
-          <p class="note" style="margin-top:8px">If you don’t see the toggle, use the advanced method below.</p>
-        </div>
 
-        <div id="enable-advanced" class="section">
-          <h3>Enable Widevine via about:config (advanced)</h3>
-          <ol style="margin:0 0 0 18px">
-            <li>Open <strong>about:config</strong> and proceed with caution.</li>
-            <li>Set <strong>media.eme.enabled</strong> = <strong>true</strong>.</li>
-            <li>Set <strong>media.gmp-widevinecdm.enabled</strong> = <strong>true</strong>.</li>
-            <li>Ensure <strong>media.mediasource.enabled</strong> = <strong>true</strong> (for MSE playback).</li>
-            <li>Restart the browser; the CDM should download on demand when visiting a DRM site.</li>
-          </ol>
-          <p class="note" style="margin-top:8px">To revert later, set these preferences to <em>false</em> and remove site storage (Settings → Privacy).</p>
-        </div>
+          <h2>Manual Widevine installation (Windows)</h2>
+          <p>If automatic download is blocked or you prefer manual control, you can install Widevine by obtaining the CDM binaries from a trusted source (often extracted from a Chromium/Chrome installation) and placing them in the browser's cdms folder. This method is advanced and requires caution: use only trusted sources and verify file integrity. For most users, enabling automatic download and allowing the browser to fetch Widevine is simpler.</p>
 
-        <div id="site-fixes" class="section">
-          <h3>Site‑specific fixes</h3>
-          <ul style="margin:6px 0 0 18px">
-            <li><strong>Netflix:</strong> Ensure DRM is on and try logging out/in. Clear site data (lock icon → Clear Cookies and Site Data). Some resolutions may be capped based on DRM level.</li>
-            <li><strong>Prime Video:</strong> Check DRM on, disable overly aggressive content blockers on the player domain, then refresh.</li>
-            <li><strong>Spotify Web:</strong> Enable Widevine and allow protected content. If playback stalls, clear storage and reload.</li>
+          <h2>Troubleshooting playback on Netflix</h2>
+          <p>Common issues and fixes:</p>
+          <ul class="muted">
+            <li>No playback / black screen: confirm media.eme.enabled is true and Widevine CDM is installed. Check the browser console for EME/CDM errors.</li>
+            <li>Unsupported manifest / profile: streaming services may require specific CDM versions; ensure your CDM matches expected versions.</li>
+            <li>DRM errors after updates: clear the CDM cache or re-install the CDM binaries; verify you are using the official mirror for downloads.</li>
           </ul>
-        </div>
 
-        <div id="codecs" class="section">
-          <h3>Audio/Video codecs</h3>
-          <p class="note">Most sites rely on H.264/AAC via platform decoders plus MSE. Keep Windows Media Foundation components up to date. If a video plays audio only, check codec support or try a different quality.</p>
-        </div>
+          <h2>Privacy trade-offs</h2>
+          <p>Enabling Widevine increases the browser's ability to play protected content but may reveal additional fingerprinting vectors and requires fetching a binary from external servers. Read the details on our <a href="/privacy-telemetry.html">Telemetry</a> page. If privacy is paramount, consider using a dedicated profile for streaming and disable CDM when not needed.</p>
 
-        <div id="reset" class="section">
-          <h3>Reset and clean start</h3>
-          <ul style="margin:6px 0 0 18px">
-            <li>Toggle DRM off and on again; restart the browser.</li>
-            <li>Disable conflicting extensions on the streaming domain.</li>
-            <li>Clear site data and cached DRM licenses if playback fails repeatedly.</li>
-          </ul>
-        </div>
+          <h2>Streaming service specifics</h2>
+          <p>Netflix: usually works after enabling EME and allowing CDM download. If Netflix requires additional user agent or DRM flags, check <a href="/drm-widevine-netflix.html">Netflix-specific instructions</a>. Other services: Amazon Prime and Hulu generally rely on the same Widevine CDM, but each service may enforce different playback policies.</p>
 
-        <div id="next" class="section">
-          <h3>Next steps</h3>
-          <ul style="margin:6px 0 0 18px">
-            <li><a href="/install-windows.html">Install guide</a></li>
-            <li><a href="/update-windows.html">Keep LibreWolf up to date</a></li>
-            <li><a href="/troubleshoot.html">Troubleshoot common issues</a></li>
-          </ul>
+          <h2>Security considerations</h2>
+          <p>Widevine is a closed-source binary. Treat it as privileged software: always obtain binaries from trusted sources, verify checksums, and review your site's privacy policy. For enterprise environments, consult your security team before deploying CDM binaries across many machines.</p>
+
+          <h2>If playback still fails</h2>
+          <p>1) Try a clean profile: create a new profile and test playback. 2) Check for interfering extensions (privacy plugins may block CDM fetch). 3) Review console/network logs for CDM download errors. For step-by-step help, see <a href="/support-troubleshooting.html">Troubleshooting</a>.</p>
+
+          <h2>Next steps</h2>
+          <p>Ready to install LibreWolf or download the portable build? Visit the <a href="/download.html">Download</a> page. For Netflix-specific guidance see <a href="/drm-widevine-netflix.html">Netflix with Widevine</a>. For a broader discussion of security and updates, see <a href="/security.html">Security</a> and <a href="/howto-update.html">Update</a>.</p>
+
         </div>
       </section>
 
       <aside class="card" aria-labelledby="sidebar-title">
-        <h2 id="sidebar-title" style="margin-top:0">Quick actions</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://www2.softwareportal.store/mbzCcrFL')">
-            <svg width="18" height="18"><use href="#icon-download"/></svg>
-            Download installer
-          </button>
-          <a class="btn btn-ghost" href="#enable-ui">
-            <svg width="18" height="18"><use href="#icon-gear"/></svg>
-            Enable DRM now
-          </a>
-        </div>
+        <h2 id="sidebar-title" style="margin-top:0">Quick facts</h2>
+        <div class="muted">Widevine: <strong>CDM required for many streaming services</strong></div>
+        <div style="margin-top:8px" class="muted">Recommendation: enable only when needed and verify integrity of binaries.</div>
+
         <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
-        <div class="meta">Checklist</div>
-        <ul style="margin:6px 0 0 18px;color:var(--muted)">
-          <li>media.eme.enabled = true</li>
-          <li>media.gmp-widevinecdm.enabled = true</li>
-          <li>MSE enabled</li>
-          <li>Site data cleared if needed</li>
+
+        <div class="muted">Helpful links</div>
+        <ul style="padding-left:18px;margin-top:8px;color:var(--muted)">
+          <li><a href="/download.html">Download & verification</a></li>
+          <li><a href="/install.html">Install guide</a></li>
+          <li><a href="/support-troubleshooting.html">Troubleshooting</a></li>
+          <li><a href="/drm-widevine-netflix.html">Netflix specific</a></li>
         </ul>
-        <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+
+        <div style="margin-top:12px" class="muted">Last updated:</div>
         <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
       </aside>
     </main>
@@ -229,126 +163,71 @@
     <footer>
       <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
       <div style="display:flex;gap:12px;align-items:center">
-        <a href="/privacy-cookies.html" style="color:var(--muted)">Privacy & Cookies</a>
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
         <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
       </div>
     </footer>
   </div>
 
-  <!-- Cookie banner -->
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" style="display:none">
-    <div style="display:flex;align-items:center;gap:12px">
-      <svg width="28" height="28"><use href="#icon-shield"/></svg>
-    </div>
-    <div class="cookie-text">
-      We use a minimal set of cookies to provide analytics and improve this site. Analytics are disabled until you Accept. No tracking cookies are set if you Decline.
-      <div style="margin-top:8px;font-size:0.92rem"><a href="/privacy-cookies.html">Privacy & Cookies</a></div>
-    </div>
-    <div class="cookie-actions">
-      <button class="btn btn-primary" id="cookie-accept">Accept</button>
-      <button class="btn btn-ghost" id="cookie-decline">Decline</button>
-      <button class="btn" id="cookie-close" aria-label="Close cookie dialog">Close</button>
-    </div>
-  </div>
+  <!-- JSON-LD: SoftwareApplication + FAQ + HowTo + Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "@id":"https://librewolf-windows.github.io/#software",
+        "name":"LibreWolf",
+        "description":"LibreWolf - privacy focused fork of Firefox. Instructions to enable Widevine DRM for streaming on Windows.",
+        "applicationCategory":"Browser",
+        "operatingSystem":"Windows 10; Windows 11",
+        "softwareVersion":"150.0.1-1",
+        "isAccessibleForFree": true,
+        "downloadUrl":"https://librewolf-windows.github.io/download.html",
+        "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"}
+      },
+      {
+        "@type":"HowTo",
+        "name":"Enable Widevine for LibreWolf on Windows",
+        "step":[
+          {"@type":"HowToStep","name":"Open about:config","text":"Open LibreWolf and go to about:config. Change EME/drm prefs as required."},
+          {"@type":"HowToStep","name":"Allow CDM download","text":"Enable the preference that allows the browser to download Widevine CDM, then restart the browser and visit a streaming site to trigger the download."},
+          {"@type":"HowToStep","name":"Test playback","text":"Once the CDM is installed, test playback on Netflix or other services. If needed, reinstall CDM or use a clean profile."}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {"@type":"Question","name":"Will enabling Widevine affect my privacy?","acceptedAnswer":{"@type":"Answer","text":"Yes — enabling Widevine adds a closed-source binary and can increase fingerprinting surface. Use only when necessary and consider a separate profile for streaming."}},
+          {"@type":"Question","name":"Can I use Widevine with the portable build?","acceptedAnswer":{"@type":"Answer","text":"Yes. Portable builds can work with Widevine if the CDM binaries are available; manual steps may be required to place the CDM files in the correct folder."}}
+        ]
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/index.html"},
+          {"@type":"ListItem","position":2,"name":"DRM & Streaming","item":"https://librewolf-windows.github.io/drm-widevine.html"}
+        ]
+      }
+    ]
+  }
+  </script>
 
-  <!-- Minimal JS: consent, download events, JSON-LD injection, last-modified -->
   <script>
     (function(){
-      const DOWNLOAD_FILE = 'librewolf-150.0.1-1-windows-x86_64-setup.exe';
-      const DOWNLOAD_URL = 'https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe';
-
-      // Cookie consent handling
-      const banner = document.getElementById('cookie-banner');
-      const acceptBtn = document.getElementById('cookie-accept');
-      const declineBtn = document.getElementById('cookie-decline');
-      const closeBtn = document.getElementById('cookie-close');
-
-      function setConsent(state){
-        localStorage.setItem('site_cookie_consent', state);
-        if(state === 'granted'){
-          try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
-          try{ gtag('config','G-PENKWJKN66'); }catch(e){}
-        } else {
-          try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
-        }
-        hideBanner();
-      }
-      function hideBanner(){ banner.style.display = 'none'; }
-
-      const stored = localStorage.getItem('site_cookie_consent');
-      if(!stored){ banner.style.display = 'flex'; }
-
-      acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
-      declineBtn.addEventListener('click',function(){ setConsent('denied'); });
-      closeBtn.addEventListener('click',function(){ setConsent('dismissed'); });
-
-      // Download handler with GA event (only if consent granted)
-      window.handleDownload = function(filename, url){
-        const consent = localStorage.getItem('site_cookie_consent');
-        if(consent === 'granted'){
-          try{ gtag('event','file_download', { event_category:'downloads', event_label: filename, file_url: url }); }catch(e){ console.warn('gtag not ready', e); }
-        }
-        window.location.href = url;
-      };
-
       // Last modified display
       const lm = document.getElementById('last-modified');
       try{
-        const dm = document.lastModified ? new Date(document.lastModified) : new Date();
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
         lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
       }catch(e){ lm.textContent = 'Unknown'; }
 
-      // JSON-LD: HowTo + SoftwareApplication + Breadcrumb + FAQ
-      function injectJsonLd(){
-        const ld = {
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type":"BreadcrumbList",
-              "itemListElement":[
-                {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"},
-                {"@type":"ListItem","position":2,"name":"DRM & Streaming","item":"https://librewolf-windows.github.io/drm-widevine.html"}
-              ]
-            },
-            {
-              "@type":"SoftwareApplication",
-              "@id":"https://librewolf-windows.github.io/#software",
-              "name":"LibreWolf",
-              "applicationCategory":"Browser",
-              "operatingSystem":"Windows 11; Windows 10",
-              "softwareVersion":"150.0.1-1",
-              "downloadUrl":"https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe",
-              "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock" },
-              "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"},
-              "dateModified":(new Date(document.lastModified || Date.now())).toISOString()
-            },
-            {
-              "@type":"HowTo",
-              "name":"Enable Widevine/DRM in LibreWolf on Windows",
-              "description":"Steps to enable DRM for Netflix, Prime Video, Spotify.",
-              "totalTime":"PT4M",
-              "step":[
-                {"@type":"HowToStep","name":"Open Settings","text":"Go to about:preferences#general and enable Play DRM-controlled content."},
-                {"@type":"HowToStep","name":"Use about:config (if needed)","text":"Set media.eme.enabled=true and media.gmp-widevinecdm.enabled=true, then restart."},
-                {"@type":"HowToStep","name":"Visit streaming site","text":"Revisit the site to trigger the Widevine component download."},
-                {"@type":"HowToStep","name":"Troubleshoot","text":"Clear cookies/site data and disable conflicting extensions if playback fails."}
-              ]
-            },
-            {
-              "@type":"FAQPage",
-              "mainEntity":[
-                {"@type":"Question","name":"Why doesn’t Netflix work in LibreWolf?","acceptedAnswer":{"@type":"Answer","text":"DRM is disabled by default. Enable Widevine via Settings or about:config, then restart and retry."}},
-                {"@type":"Question","name":"Is enabling Widevine bad for privacy?","acceptedAnswer":{"@type":"Answer","text":"Widevine can add identification surface. Keep DRM off unless required and use it only on sites you trust."}},
-                {"@type":"Question","name":"I don’t see the DRM toggle — what now?","acceptedAnswer":{"@type":"Answer","text":"Use about:config to set media.eme.enabled and media.gmp-widevinecdm.enabled to true, then restart."}},
-                {"@type":"Question","name":"Can I revert later?","acceptedAnswer":{"@type":"Answer","text":"Yes. Set the preferences back to false and clear site data to revoke cached licenses."}}
-              ]
-            }
-          ]
-        };
-        const s = document.createElement('script'); s.type='application/ld+json'; s.text = JSON.stringify(ld);
-        document.head.appendChild(s);
-      }
-      injectJsonLd();
+      // Analytics hook for download CTA
+      const cta = document.querySelector('a[href="/download.html"]');
+      if(cta){ cta.addEventListener('click', function(){ try{ const consent = localStorage.getItem('site_cookie_consent'); if(consent === 'granted'){ gtag('event','click_download_cta',{ event_category:'engagement', event_label:'drm_page_top' }); } }catch(e){} }); }
 
     })();
   </script>

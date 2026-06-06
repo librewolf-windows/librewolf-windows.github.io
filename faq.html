@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FAQ — LibreWolf for Windows</title>
+  <meta name="description" content="Frequently asked questions about LibreWolf for Windows: downloads, installation, portable builds, telemetry, DRM, updates and troubleshooting.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/faq.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="2026-06-06T19:52:00Z">
+
+  <meta property="og:title" content="FAQ — LibreWolf for Windows">
+  <meta property="og:description" content="Frequently asked questions about LibreWolf for Windows: downloads, installation, portable builds, telemetry, DRM, updates and troubleshooting.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/faq.html">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --pad:18px; --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--pad)}
+    header{display:flex;align-items:center;justify-content:space-between}
+    nav a{color:var(--muted);padding:8px;border-radius:8px;text-decoration:none}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:10px;box-shadow:var(--shadow)}
+    h1{margin:0 0 8px;font-size:1.7rem}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .q{color:var(--text);font-weight:700;margin-top:14px}
+    .a{color:var(--muted);margin:8px 0 6px}
+    a.inline{color:var(--accent)}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;overflow:auto;color:var(--muted)}
+    footer{margin-top:24px;color:var(--muted)}
+    @media (max-width:900px){ .card{padding:16px} }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('consent','default',{ 'analytics_storage':'denied' });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:44px;height:44px;border-radius:10px;background:#0B1220;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div style="font-weight:700">LibreWolf for Windows</div><div style="font-size:0.9rem;color:var(--muted)">FAQ & support</div></div></div>
+      </div>
+      <nav aria-label="Main"><a href="/index.html">Home</a> <a href="/download.html">Download</a> <a href="/install.html">Install</a> <a href="/portable.html">Portable</a> <a href="/privacy-telemetry.html">Privacy</a></nav>
+    </header>
+
+    <main style="margin-top:18px">
+      <div class="card">
+        <h1>Frequently Asked Questions</h1>
+        <p class="lead">Short answers to common questions about downloads, installation, privacy, DRM and troubleshooting. Each answer links to detailed guides where appropriate.</p>
+
+        <div>
+          <div class="q">1. Where can I download LibreWolf for Windows?</div>
+          <div class="a">Get official builds on our <a class="inline" href="/download.html">Download page</a>. That page includes installer and portable builds, mirrors and SHA256 checksums — verify before running.</div>
+
+          <div class="q">2. Should I use the installer or portable build?</div>
+          <div class="a">For most users the <a class="inline" href="/install.html">installer</a> is recommended — it integrates with Windows and supports updates. Use the <a class="inline" href="/portable.html">portable</a> build if you need no-install, no-admin usage (USB, testing). See <a class="inline" href="/portable-vs-install.html">Portable vs Install</a> for a full comparison.</div>
+
+          <div class="q">3. How do I verify the download (SHA256)?</div>
+          <div class="a">On Windows, run PowerShell:</div>
+          <pre>Get-FileHash -Path C:\path\to\librewolf-150.0.1-1-windows-x86_64-setup.exe -Algorithm SHA256</pre>
+          <div class="a">Compare the output to the SHA256 published on our <a class="inline" href="/download.html">Download page</a>. If they differ, do not run the file.</div>
+
+          <div class="q">4. I clicked Download but Google Analytics shows no event — why?</div>
+          <div class="a">This site respects privacy: analytics are disabled until you Accept cookies. If you accept, events are sent via GA4. Also, direct downloads or redirects can navigate away before JS fires. For reliable counting we recommend a server-side redirect endpoint which logs downloads and optionally sends server-side Measurement Protocol hits.</div>
+
+          <div class="q">5. Can I install LibreWolf with winget?</div>
+          <div class="a">Yes. We provide winget guidance on <a class="inline" href="/install-winget.html">Install with winget</a>. Confirm the official package ID on the <a class="inline" href="/install-winget-package-id.html">Package ID page</a> before installing.</div>
+
+          <div class="q">6. How do I watch Netflix or other DRM content?</div>
+          <div class="a">Enable EME and allow Widevine CDM. See <a class="inline" href="/drm-widevine.html">DRM & Streaming</a> and <a class="inline" href="/drm-widevine-netflix.html">Netflix-specific instructions</a>. Be aware that enabling DRM increases fingerprinting risk; consider a separate profile for streaming.</div>
+
+          <div class="q">7. Is telemetry enabled in these builds?</div>
+          <div class="a">No — builds on this site are distributed with telemetry disabled by default. Review <a class="inline" href="/privacy-telemetry.html">Telemetry & Privacy</a> for exact prefs and how to harden or audit your installation.</div>
+
+          <div class="q">8. What if the installer is blocked by SmartScreen or Defender?</div>
+          <div class="a">SmartScreen may warn if the binary is new or uncommon. Verify SHA256 and, if you trust the file, choose 'More info' → 'Run anyway'. Alternatively, use the <a class="inline" href="/portable.html">portable</a> build or contact us via the <a class="inline" href="/about-github.html">GitHub</a> page for assistance.</div>
+
+          <div class="q">9. How do I update LibreWolf?</div>
+          <div class="a">For installer builds, update manually via our <a class="inline" href="/download.html">Download</a> page or use winget: <pre>winget upgrade --id &lt;PACKAGE_ID&gt;</pre> For portable builds, download the new archive and migrate your profile. See <a class="inline" href="/howto-update.html">Update guide</a> for full details.</div>
+
+          <div class="q">10. Where are profiles stored and how do I move them?</div>
+          <div class="a">Profile locations differ between installer and portable builds. Installer profiles are typically in %APPDATA%\LibreWolf, while portable profiles are inside the portable folder. See <a class="inline" href="/support-profile-location.html">Profile & Location</a> for exact paths and migration steps.</div>
+
+          <div class="q">11. I have playback errors or extensions missing — how to troubleshoot?</div>
+          <div class="a">Start with a clean profile and disable extensions. Check console logs and CDM status in about:support. The <a class="inline" href="/support-troubleshooting.html">Troubleshooting</a> page lists common errors and fixes.</div>
+
+          <div class="q">12. How can I be sure the build is trustworthy?</div>
+          <div class="a">Verify checksums and PGP signatures if provided, inspect the official GitHub releases, and review the build process. We recommend reading the <a class="inline" href="/about-github.html">GitHub</a> page and the <a class="inline" href="/news-releases.html">Releases</a> for proofs and changelogs.</div>
+
+          <div class="q">13. Can I contribute to the builds or packaging?</div>
+          <div class="a">Yes — see <a class="inline" href="/about-github.html">GitHub</a> for contribution guidelines, packaging instructions and how to submit winget manifests.</div>
+
+          <div class="q">14. How is my download privacy handled if I decline cookies?</div>
+          <div class="a">If you decline analytics cookies, no GA cookies are set. For basic download metrics we may use anonymous server logs (if enabled) that do not contain PII. See <a class="inline" href="/privacy-telemetry.html">Privacy</a> for details.</div>
+
+          <div class="q">15. I found a bug or security issue — what now?</div>
+          <div class="a">Report bugs via the project's GitHub issues or the contact methods listed on the <a class="inline" href="/about-github.html">GitHub</a> page. For security issues, include reproduction steps, logs and severity to help triage.</div>
+
+        </div>
+      </div>
+
+      <footer style="margin-top:18px">
+        <div class="muted">Need more help? See <a class="inline" href="/support-troubleshooting.html">Troubleshooting</a> or the <a class="inline" href="/faq.html">full FAQ</a>. If you want, I can now generate the Troubleshooting page.</div>
+      </footer>
+    </main>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Where can I download LibreWolf for Windows?","acceptedAnswer":{"@type":"Answer","text":"Get official builds on our Download page. That page includes installer and portable builds, mirrors and SHA256 checksums — verify before running."}},
+      {"@type":"Question","name":"Should I use the installer or portable build?","acceptedAnswer":{"@type":"Answer","text":"For most users the installer is recommended — it integrates with Windows and supports updates. Use the portable build if you need no-install, no-admin usage."}},
+      {"@type":"Question","name":"How do I verify the download (SHA256)?","acceptedAnswer":{"@type":"Answer","text":"Run Get-FileHash or certutil to compute the SHA256 checksum on your download and compare it to the official checksum published on the Download page."}}
+    ]
+  }
+  </script>
+
+</body>
+</html>

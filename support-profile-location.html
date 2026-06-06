@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Profile & Location — Where LibreWolf Stores Your Data (Windows)</title>
+  <meta name="description" content="Learn where LibreWolf stores profiles and user data on Windows, how to move or backup profiles, and tips for portable vs installed builds.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/support-profile-location.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
+  <meta property="og:title" content="Profile & Location — Where LibreWolf Stores Your Data (Windows)">
+  <meta property="og:description" content="Learn where LibreWolf stores profiles and user data on Windows, how to move or backup profiles, and tips for portable vs installed builds.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/support-profile-location.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.6rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .columns{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;color:var(--muted);overflow:auto}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .columns{grid-template-columns:1fr} }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Where does LibreWolf store profiles on Windows?","acceptedAnswer":{"@type":"Answer","text":"Installed builds use %APPDATA%\\LibreWolf\\Profiles\\<profile>. Portable builds keep the profile inside the portable folder (Profile or Data directory) depending on the packaging."}},
+      {"@type":"Question","name":"How do I move my profile to another machine?","acceptedAnswer":{"@type":"Answer","text":"Close LibreWolf, copy the profile folder to the new machine's %APPDATA% path, then start LibreWolf with the profile parameter or use the profile manager to point to the copied folder."}}
+    ]
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:20px">
+      <div class="columns">
+        <section class="card">
+          <h1 class="h1">Profile & Location</h1>
+          <p class="lead">Quick answer: Installed LibreWolf stores profiles in %APPDATA%\LibreWolf by default. Portable builds keep the profile inside the portable directory so you can run LibreWolf without touching the host system. Read below for exact paths, how to locate your active profile, and safe backup/migration steps.</p>
+
+          <h2 style="margin-top:12px">Default profile locations (Windows)</h2>
+          <p style="color:var(--muted)">Depending on build type, LibreWolf stores user data in different locations. Use the correct path for backups or migration.</p>
+
+          <h3 style="margin-top:8px">Installed build (recommended location)</h3>
+          <pre>%APPDATA%\LibreWolf\Profiles\<profile_folder></pre>
+          <p style="color:var(--muted)">Example full path: C:\Users\Alice\AppData\Roaming\LibreWolf\Profiles\abcdefgh.default</p>
+
+          <h3 style="margin-top:8px">Portable build</h3>
+          <pre>\Path\To\LibreWolf-Portable\Profile\ or \Path\To\LibreWolf-Portable\Data\</pre>
+          <p style="color:var(--muted)">Portable packages place the profile inside the distribution folder; some portable bundles use a "Data" folder. Check the README provided with the portable build.</p>
+
+          <h2 style="margin-top:12px">How to find the active profile</h2>
+          <ol style="color:var(--muted)">
+            <li>Open LibreWolf and in the address bar type <code>about:profiles</code>.</li>
+            <li>Inspect the "Root Directory" for the profile marked as "Default" — this is the active folder.</li>
+            <li>From there, you can open the folder or copy its path for backup.</li>
+          </ol>
+
+          <h2 style="margin-top:12px">Backing up a profile (safe method)</h2>
+          <ol style="color:var(--muted)">
+            <li>Close LibreWolf completely (check Task Manager for background processes).</li>
+            <li>Copy the entire profile folder (the parent of <code>places.sqlite</code>, <code>extensions</code>, etc.) to a safe location or external drive.</li>
+            <li>If restoring later, copy the folder back to the appropriate path and ensure correct permissions.</li>
+          </ol>
+
+          <h2 style="margin-top:12px">Migrating portable → installed (step-by-step)</h2>
+          <ol style="color:var(--muted)">
+            <li>Close all LibreWolf instances.</li>
+            <li>Copy the portable profile folder to <code>%APPDATA%\LibreWolf\Profiles\</code> (create the directory if it doesn’t exist).</li>
+            <li>Start LibreWolf with the Profile Manager: <code>librewolf.exe -ProfileManager</code> and create/select the migrated profile or edit profiles.ini to point to the folder.</li>
+            <li>Verify bookmarks, extensions and settings. Some extensions may need re-authentication.</li>
+          </ol>
+
+          <h2 style="margin-top:12px">Permissions and antivirus considerations</h2>
+          <p style="color:var(--muted)">When moving profiles or running portable builds from removable media, ensure the OS and antivirus allow LibreWolf to read/write profile files. Some AV products may quarantine portable executables or block profile writes — whitelist the folder if needed.</p>
+
+          <h2 style="margin-top:12px">Enterprise & centralized profile management</h2>
+          <p style="color:var(--muted)">For enterprise deployments, prefer the installer and use Windows group policies or management tools. You can pre-populate profiles, lock certain preferences, and distribute extensions centrally. See <a href="/install.html">Install guide</a> for automation tips (winget, silent installs).</p>
+
+          <h2 style="margin-top:12px">Troubleshooting profile issues</h2>
+          <ul style="color:var(--muted)">
+            <li>If LibreWolf fails to start, try launching with a new profile to confirm corruption: <code>librewolf.exe -ProfileManager</code>.</li>
+            <li>If bookmarks or history are missing, check whether you're using a different profile or backup the original before overwriting.</li>
+            <li>Permissions errors: ensure the user account owns files and folders (adjust ACLs or run as administrator briefly for migration tasks).</li>
+          </ul>
+
+          <h2 style="margin-top:12px">Quick links</h2>
+          <ul style="color:var(--muted)">
+            <li><a href="/portable.html">Portable guide</a></li>
+            <li><a href="/install.html">Installer & winget</a></li>
+            <li><a href="/support-troubleshooting.html">Troubleshooting</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+          </ul>
+
+        </section>
+
+        <aside class="card" aria-labelledby="sidebar-title">
+          <h2 id="sidebar-title" style="margin-top:0">Backup checklist</h2>
+          <ul style="color:var(--muted)">
+            <li>Close LibreWolf</li>
+            <li>Copy profile folder (include "extensions", "places.sqlite")</li>
+            <li>Verify file ownership & permissions</li>
+            <li>Store backup in encrypted archive if containing sensitive data</li>
+          </ul>
+
+          <div style="margin-top:12px"><a class="btn-primary" href="/download.html">Download latest build</a></div>
+
+          <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+          <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+        </aside>
+      </div>
+
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content && build.content !== '[BUILD_DATE]' ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+    })();
+  </script>
+
+</body>
+</html>

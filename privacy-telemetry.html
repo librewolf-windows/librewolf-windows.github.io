@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Telemetry & Privacy — LibreWolf for Windows</title>
+  <meta name="description" content="Detailed explanation of telemetry and data collection in LibreWolf builds for Windows. What is collected (if anything), how to disable telemetry, and privacy-first recommendations.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/privacy-telemetry.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="2026-06-06T19:45:00Z">
+
+  <meta property="og:title" content="Telemetry & Privacy — LibreWolf for Windows">
+  <meta property="og:description" content="What telemetry LibreWolf collects (if any), how to disable settings, server-side logging and privacy recommendations for Windows users.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/privacy-telemetry.html">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    a:focus{outline:none;box-shadow:var(--focus)}
+
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
+
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;margin-top:22px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.7rem;margin:0}
+    .lead{color:var(--muted);margin-bottom:16px}
+
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    .muted{color:var(--muted)}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;overflow:auto;color:var(--muted)}
+    .content-section{margin-top:14px;color:var(--muted)}
+    .content-section h2{color:var(--text);margin:12px 0}
+    .pill{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);}
+
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} .card{padding:16px} }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('consent','default',{ 'analytics_storage':'denied' });
+  </script>
+</head>
+<body>
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-download" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v10m0 0 4-4m-4 4-4-4M5 21h14v-2H5v2z"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
+  </svg>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;"> 
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main class="hero" role="main">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <h1 class="h1">Telemetry & Privacy</h1>
+            <div class="muted" style="margin-top:6px">Clear, practical information about data collection, telemetry and privacy controls for LibreWolf builds on Windows.</div>
+          </div>
+          <div>
+            <a class="btn btn-primary" href="/download.html" aria-label="Download LibreWolf for Windows"><svg width="18" height="18" style="vertical-align:middle"><use href="#icon-download"/></svg>&nbsp;Download</a>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h2>Summary (quick answer)</h2>
+          <p>LibreWolf builds provided here are distributed with telemetry disabled by default. We collect no analytics from application binaries themselves. This site uses minimal analytics which are disabled until you accept cookies. Below are the exact types of data you may encounter, how to verify and how to opt out or harden your setup on Windows.</p>
+
+          <h2>What "telemetry" usually means</h2>
+          <p>Telemetry is any data automatically sent from the application to its developers or third parties. It ranges from harmless anonymous crash reports to detailed usage metrics or identifiers. LibreWolf's goal is to minimize or eliminate telemetry; still, some components (e.g. CDMs, OS update services) may interact with external servers for legitimate functionality.</p>
+
+          <h2>Data types you might see and where they come from</h2>
+          <ul class="muted">
+            <li><strong>Crash reports / telemetry pings:</strong> Often generated by the browser to help developers diagnose crashes. In LibreWolf builds supplied here, these are disabled by default.</li>
+            <li><strong>Component downloads:</strong> Widevine CDM or other binaries may be downloaded from third-party servers when enabling DRM or features; these are not telemetry but are network fetches you should be aware of.</li>
+            <li><strong>Update checks:</strong> Installers and package managers (winget) can check for updates — such checks may reveal version and OS to a server. Use manual updates if you require no remote checks.</li>
+            <li><strong>Site telemetry:</strong> visited websites may run trackers — use built-in blocking, extensions and a hardened config to reduce exposure.</li>
+          </ul>
+
+          <h2>What we collect on this website</h2>
+          <p class="muted">This site uses Google Analytics (GA4) only after you accept cookies. We do not store or share any personally identifiable information from downloads. For users who decline analytics cookies, we still maintain minimal, anonymous server logs (if you deploy server-side logging) to measure file downloads and for abuse protection; these logs do not contain personally identifying payloads and are retained according to our policy (please update with your retention period).</p>
+
+          <h2>How to check and disable telemetry in LibreWolf</h2>
+          <p>LibreWolf is configured to be privacy friendly, but here are explicit steps to verify and disable any remaining telemetry-related prefs:</p>
+          <ol class="muted">
+            <li>Open LibreWolf and go to <code>about:config</code>. Accept risk warning.</li>
+            <li>Search for common telemetry prefs (examples): <code>datareporting.healthreport.uploadEnabled</code>, <code>toolkit.telemetry.enabled</code>, <code>toolkit.telemetry.server</code>. Ensure relevant booleans are set to <code>false</code> and endpoints cleared.</li>
+            <li>Check <code>about:preferences#privacy</code> for any usage of telemetry or crash reporting toggles and disable them.</li>
+            <li>For enterprise/hardened installs, apply a locked prefs file via configuration management (autoconfig/policies) to enforce settings.</li>
+          </ol>
+
+          <h2>Site cookie consent and analytics</h2>
+          <p>This site shows a cookie banner. Analytics (Google Analytics) are blocked until you Accept. If you Decline, no GA cookies are set. To measure downloads more reliably while respecting consent, consider server-side Measurement Protocol in a serverless redirect that logs events anonymously (no user-identifying cookies sent without consent).</p>
+
+          <h2>Server-side download tracking (recommended for accuracy)</h2>
+          <p>If you want accurate download counts independent of client JS and cookie consent, use a server-side redirect endpoint (Cloudflare Worker / Netlify Function) that logs a minimal event and then redirects to the mirror. Example benefits:</p>
+          <ul class="muted">
+            <li>Counts downloads even when JS is disabled or blocked.</li>
+            <li>Can send anonymized Measurement Protocol hits to GA4 (server-side) without client cookies.</li>
+            <li>Helps detect abuse (rate-limiting) and provides reliable metrics for conversion optimization.</li>
+          </ul>
+
+          <h2>Privacy-friendly analytics pattern</h2>
+          <p>Recommended approach:</p>
+          <ol class="muted">
+            <li>Collect minimal anonymous server logs for download events (timestamp, file, user-agent truncated, country derived from IP — optional).</li>
+            <li>Expose rich analytics only after the user consents via the cookie banner.</li>
+            <li>Document data retention, purpose and third-party processors in your privacy page (<a href="/privacy-telemetry.html">this page</a>) and provide contact details for data requests.</li>
+          </ol>
+
+          <h2>User controls — practical checklist</h2>
+          <ul class="muted">
+            <li>Decline analytics cookies on the site to prevent GA from running in the browser.</li>
+            <li>Use portable builds on untrusted machines to avoid system integration.</li>
+            <li>Disable EME/Widevine unless you need DRM playback.</li>
+            <li>Use hardened preferences and a privacy profile for browsing (see <a href="/privacy-settings.html">Privacy Settings</a>).</li>
+          </ul>
+
+          <h2>Legal & compliance notes</h2>
+          <p>Server-side logging and Measurement Protocol must be documented in your privacy policy. If you process data of EU residents, ensure GDPR obligations are met (legal basis, data subject rights, data processing agreement with processors). For Bing/Webmaster and GA, review regional rules if you operate globally.</p>
+
+          <h2>Transparency — where to find proofs</h2>
+          <p>For full transparency, provide SHA256 checksums, PGP signatures (if available) and a changelog on the <a href="/news-releases.html">Releases</a> page. Consider publishing a short technical note on build reproducibility and supply-chain steps to build trust.</p>
+
+          <h2>Need help or a privacy audit?</h2>
+          <p>If you need assistance reviewing telemetry settings, configuring server-side logging, or crafting a compliant privacy policy, see <a href="/support-troubleshooting.html">Troubleshooting</a> and <a href="/about-github.html">GitHub</a> for contribution and contact options.</p>
+        </div>
+      </section>
+
+      <aside class="card" aria-labelledby="sidebar-title">
+        <h2 id="sidebar-title" style="margin-top:0">Quick facts</h2>
+        <div class="muted">Telemetry default: <span class="pill">Disabled in these builds</span></div>
+        <div style="margin-top:8px" class="muted">Site analytics: <span class="pill">Blocked until consent</span></div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+        <div class="muted">Helpful links</div>
+        <ul style="padding-left:18px;margin-top:8px;color:var(--muted)">
+          <li><a href="/privacy-settings.html">Privacy Settings (howto)</a></li>
+          <li><a href="/download.html">Download & verification</a></li>
+          <li><a href="/security.html">Security</a></li>
+          <li><a href="/faq.html">FAQ</a></li>
+        </ul>
+
+        <div style="margin-top:12px" class="muted">Last updated:</div>
+        <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <a href="/about-github.html" style="color:var(--muted)">GitHub</a>
+      </div>
+    </footer>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"WebPage","@id":"https://librewolf-windows.github.io/privacy-telemetry.html","url":"https://librewolf-windows.github.io/privacy-telemetry.html","name":"Telemetry & Privacy","description":"Information about telemetry and privacy for LibreWolf Windows builds."},
+      {"@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"Is telemetry enabled in these LibreWolf builds?","acceptedAnswer":{"@type":"Answer","text":"No — these builds are distributed with telemetry disabled by default. Verify settings in about:config to ensure telemetry prefs are off."}},
+        {"@type":"Question","name":"How can I opt out of site analytics?","acceptedAnswer":{"@type":"Answer","text":"Use the cookie banner to Decline analytics; the site will not set GA cookies if you decline. You can also block analytics via browser extensions."}}
+      ]}
+    ]
+  }
+  </script>
+
+  <script>
+    (function(){
+      // last modified display
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+
+      // small analytics hook: track contact to download CTA if consent granted
+      const btn = document.querySelector('a[href="/download.html"]');
+      if(btn){ btn.addEventListener('click', function(){ try{ const consent = localStorage.getItem('site_cookie_consent'); if(consent === 'granted'){ gtag('event','click_download_cta',{event_category:'engagement', event_label:'privacy_page_top'}); } }catch(e){} }); }
+    })();
+  </script>
+</body>
+</html>

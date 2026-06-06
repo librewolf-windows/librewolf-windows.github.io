@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Security — LibreWolf for Windows — Security recommendations</title>
+  <meta name="description" content="Security guidance for LibreWolf on Windows: how to verify builds, signatures and hashes, harden preferences and protect profiles.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/security.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="2026-06-06T20:20:00Z">
+
+  <meta property="og:title" content="Security — LibreWolf for Windows — Security recommendations">
+  <meta property="og:description" content="Guidance on verifying SHA256 and PGP signatures, hardening configuration, protecting profiles and supply-chain notes for Windows users.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/security.html">
+  <meta property="og:image" content="https://librewolf-windows.github.io/og-librewolf-windows.png">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    a:focus{outline:none;box-shadow:var(--focus)}
+
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text);box-shadow:none}
+
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;margin-top:22px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.7rem;margin:0}
+    .lead{color:var(--muted);margin-bottom:16px}
+
+    .muted{color:var(--muted)}
+    pre{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;overflow:auto;color:var(--muted)}
+    .content-section{margin-top:14px;color:var(--muted)}
+    .content-section h2{color:var(--text);margin:12px 0}
+    .note{background:rgba(34,211,238,0.04);border-left:3px solid rgba(34,211,238,0.14);padding:10px;border-radius:6px;color:var(--muted);}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} .card{padding:16px} }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('consent','default',{ 'analytics_storage':'denied' });
+  </script>
+</head>
+<body>
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.8 9.7 8 11 4.2-1.3 8-6 8-11V5l-8-3z"/></symbol>
+  </svg>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;"> 
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main class="hero" role="main">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <h1 class="h1">Security — guidance for Windows users</h1>
+            <div class="muted" style="margin-top:6px">Practical recommendations: verify builds, protect profiles, check signatures and minimize supply‑chain risk.</div>
+          </div>
+          <div>
+            <a class="btn btn-primary" href="/download.html" aria-label="Download LibreWolf for Windows"><svg width="18" height="18" style="vertical-align:middle"><use href="#icon-shield"/></svg>&nbsp;Download</a>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h2>Quick answer</h2>
+          <p>Always verify SHA256 (and PGP signatures if available), download only from official mirrors, back up profiles before updates, and consider a separate profile for streaming/DRM. For enterprise metrics use a server-side redirect that logs anonymized download events and optionally sends Measurement Protocol hits to GA4.</p>
+
+          <h2>1) Integrity checks — SHA256 and signatures</h2>
+          <p>Before running any installer, compare the SHA256 of the downloaded file with the official checksum:</p>
+          <pre class="muted"># PowerShell
+Get-FileHash -Path C:\path\to\librewolf-150.0.1-1-windows-x86_64-setup.exe -Algorithm SHA256</pre>
+          <p>If PGP signatures are published by the project, verify them as an extra guarantee of origin and integrity.</p>
+
+          <h2>2) Where to download — mirrors and safe links</h2>
+          <p>Only download from mirrors listed on the <a href="/download.html">Download</a> page. Avoid untrusted third-party sites and distribution channels that are not endorsed by the project.</p>
+
+          <h2>3) Signatures and chain of trust</h2>
+          <p>When available, verify PGP/GPG signatures against the project's published public keys. Basic example:</p>
+          <pre class="muted">gpg --verify librewolf-150.0.1-1-windows-x86_64-setup.exe.sig librewolf-150.0.1-1-windows-x86_64-setup.exe</pre>
+          <p>Ensure the signing key fingerprint matches the one published in official project channels (GitHub, release notes).</p>
+
+          <h2>4) Hardening browser preferences and profile</h2>
+          <p>Recommended hardenings:</p>
+          <ul class="muted">
+            <li>Open <code>about:config</code> and ensure telemetry prefs are disabled (<code>toolkit.telemetry.enabled=false</code>, <code>datareporting.healthreport.uploadEnabled=false</code>).</li>
+            <li>Use uBlock Origin, Decentraleyes and other proven privacy extensions, but test for site compatibility.</li>
+            <li>Create a dedicated profile for streaming (Widevine) to avoid mixing DRM components with your main privacy profile.</li>
+          </ul>
+
+          <h2>5) Protecting profiles and secrets</h2>
+          <p>The profile contains cookies, extensions and settings. Practical steps:</p>
+          <ul class="muted">
+            <li>Backup profiles before updates (copy the profile folder to a safe location).</li>
+            <li>Use a password manager; avoid storing sensitive data in plain files within the profile.</li>
+            <li>Restrict filesystem permissions on profile folders where appropriate.</li>
+          </ul>
+
+          <h2>6) Updates & version control</h2>
+          <p>Follow the update guidance on <a href="/howto-update.html">How to Update</a>. Test updates in a staging environment and pin versions if necessary. For reproducibility and supply-chain safety, prefer manifests and signed releases.</p>
+
+          <h2>7) Analytics, tracking and server-side metrics</h2>
+          <p>This site enables GA4 only after user consent. For reliable download metrics that respect privacy, implement a server-side redirect endpoint (Worker/Function) that logs anonymized events and optionally uses Measurement Protocol server-side; this avoids client-side tracking and still gives accurate counts.</p>
+
+          <h2>8) Supply-chain considerations</h2>
+          <p>Reproducible builds are the gold standard: they allow independent verification that distributed binaries match the published source. If the project publishes reproducible build instructions or CI artifacts, follow and verify them. Publish checksums and signatures alongside releases.</p>
+
+          <h2>9) Reporting vulnerabilities</h2>
+          <p>If you discover a security issue, use the project's preferred private disclosure channel (check the project's GitHub). Provide a clear report with reproduction steps, affected versions and logs. For critical vulnerabilities, coordinate disclosure and avoid publicizing details until fixed.</p>
+
+          <h2>10) Enterprise recommendations</h2>
+          <ul class="muted">
+            <li>Enforce policies via policies.json / autoconfig to disable telemetry and lock critical prefs.</li>
+            <li>Deploy via winget/Intune/SCCM with checksum verification in deployment pipelines.</li>
+            <li>Use server-side redirect logging and scanning in CI to validate artifacts before distribution.</li>
+          </ul>
+
+          <div class="note" style="margin-top:12px">If you want, I can generate an example Cloudflare Worker that logs download events (minimal anonymous data) and sends Measurement Protocol hits to GA4 — this increases accuracy without enabling client-side analytics for users who decline cookies.</div>
+
+        </div>
+      </section>
+
+      <aside class="card" aria-labelledby="sidebar-title">
+        <h2 id="sidebar-title" style="margin-top:0">Quick commands</h2>
+        <div class="muted">Check SHA256 (PowerShell):</div>
+        <pre class="muted">Get-FileHash -Path C:\path\to\file -Algorithm SHA256</pre>
+
+        <div style="margin-top:8px" class="muted">Verify PGP signature:</div>
+        <pre class="muted">gpg --verify file.sig file</pre>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+        <div class="muted">Useful links</div>
+        <ul style="padding-left:18px;margin-top:8px;color:var(--muted)">
+          <li><a href="/download.html">Download & verification</a></li>
+          <li><a href="/howto-update.html">How to Update</a></li>
+          <li><a href="/privacy-telemetry.html">Privacy & Telemetry</a></li>
+          <li><a href="/support-troubleshooting.html">Troubleshooting</a></li>
+        </ul>
+
+        <div style="margin-top:12px" class="muted">Last updated:</div>
+        <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+      </div>
+    </footer>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"SoftwareApplication","@id":"https://librewolf-windows.github.io/#software","name":"LibreWolf","description":"LibreWolf - privacy focused fork of Firefox. Security notes for Windows builds.","applicationCategory":"Browser","operatingSystem":"Windows 10; Windows 11","softwareVersion":"150.0.1-1","isAccessibleForFree":true,"downloadUrl":"https://librewolf-windows.github.io/download.html","publisher":{"@type":"Organization","name":"LibreWolf builds mirror"}},
+      {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I verify downloads?","acceptedAnswer":{"@type":"Answer","text":"Use SHA256 checksums and PGP signatures if provided. The Download page lists checksums and instructions."}},{"@type":"Question","name":"What to do when SmartScreen blocks installer?","acceptedAnswer":{"@type":"Answer","text":"Verify checksum, then use 'More info' -> 'Run anyway' if you trust the file. Alternatively use portable build."}}]}
+    ]
+  }
+  </script>
+
+  <script>
+    (function(){
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+    })();
+  </script>
+</body>
+</html>

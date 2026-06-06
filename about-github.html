@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About & GitHub — LibreWolf Builds (Windows)</title>
+  <meta name="description" content="About this unofficial LibreWolf builds site. Links to source repositories, contribution guide, and how releases are built for Windows.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/about-github.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
+  <meta property="og:title" content="About & GitHub — LibreWolf Builds (Windows)">
+  <meta property="og:description" content="About this unofficial LibreWolf builds site. Links to source repositories, contribution guide, and how releases are built for Windows.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/about-github.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.6rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .columns{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .columns{grid-template-columns:1fr} }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"AboutPage",
+    "name":"About & GitHub — LibreWolf Builds (Windows)",
+    "description":"Information about the unofficial LibreWolf builds site, contribution links, and repository references.",
+    "mainEntity": {
+      "@type":"Organization",
+      "name":"LibreWolf builds mirror",
+      "url":"https://librewolf-windows.github.io/",
+      "sameAs":["https://github.com/" ]
+    }
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:20px">
+      <div class="columns">
+        <section class="card">
+          <h1 class="h1">About & GitHub</h1>
+          <p class="lead">Quick answer: This is an unofficial mirror and installer repository for LibreWolf Windows builds. Source code and packaging scripts are available on GitHub — contributions, issue reports and packaging improvements are welcome. Always verify checksums before installing.</p>
+
+          <h2 style="margin-top:12px">Repository & sources</h2>
+          <p style="color:var(--muted)">Primary code and packaging scripts used to build the Windows binaries are hosted on GitHub. For transparency, we link upstream releases and include manifests where possible. If you maintain a fork or packaging script, feel free to open a PR or contact the repo owner.</p>
+
+          <h2 style="margin-top:12px">How releases are built (high level)</h2>
+          <ol style="color:var(--muted)">
+            <li>Fetch upstream Firefox source and LibreWolf patches.</li>
+            <li>Apply packaging patches and build scripts for Windows targets.</li>
+            <li>Run CI to produce artifacts, sign or checksum binaries, and publish to mirrors.</li>
+            <li>Update site content (download links, checksums, release notes) and update sitemap.</li>
+          </ol>
+
+          <h2 style="margin-top:12px">Contributing</h2>
+          <p style="color:var(--muted)">We welcome contributions to packaging scripts, mirrors, translations and documentation. Typical contribution flow:</p>
+          <ul style="color:var(--muted)">
+            <li>Fork the repository on GitHub.</li>
+            <li>Create a feature branch and submit a pull request with clear descriptions and tests where applicable.</li>
+            <li>Maintain semantic commit messages and reference issue numbers for easier review.</li>
+          </ul>
+
+          <h2 style="margin-top:12px">Security & provenance</h2>
+          <p style="color:var(--muted)">Always verify checksums and signatures. We publish SHA256 checksums on the Download page but do not host PGP keys centrally — check the upstream project or official mirrors for signing keys. If you discover a security issue, open a private issue in the GitHub repo or contact the maintainer according to the repository's security policy.</p>
+
+          <h2 style="margin-top:12px">Contact & reporting issues</h2>
+          <p style="color:var(--muted)">For packaging issues, opensource contributions, or mirror problems, open an issue on the GitHub repository. For security-sensitive reports, follow the repository's security disclosure instructions.</p>
+
+          <h2 style="margin-top:12px">Related links</h2>
+          <ul style="color:var(--muted)">
+            <li><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> (main organization)</li>
+            <li><a href="/news-releases.html">Releases & Changelog</a></li>
+            <li><a href="/download.html">Download</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+          </ul>
+
+        </section>
+
+        <aside class="card" aria-labelledby="sidebar-title">
+          <h2 id="sidebar-title" style="margin-top:0">Repository Spotlight</h2>
+          <p style="color:var(--muted);margin-top:0">If you're looking for packaging scripts, check the project's GitHub org. The repo includes CI configs, build manifests and example release notes.</p>
+
+          <div style="margin-top:12px">
+            <a class="btn btn-primary" href="https://github.com/" target="_blank" rel="noopener">Open GitHub</a>
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+          <div style="color:var(--muted);font-size:0.92rem">Last updated:</div>
+          <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+        </aside>
+      </div>
+
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content && build.content !== '[BUILD_DATE]' ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Privacy Settings — Configure LibreWolf for Windows</title>
+  <meta name="description" content="How to configure privacy settings in LibreWolf for Windows: telemetry toggles, cookies, tracker blocking, site permissions, and recommended hardened preferences.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/privacy-settings.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
+  <meta property="og:title" content="Privacy Settings — Configure LibreWolf for Windows">
+  <meta property="og:description" content="How to configure privacy settings in LibreWolf for Windows: telemetry toggles, cookies, tracker blocking, site permissions, and recommended hardened preferences.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/privacy-settings.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.6rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .columns{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    .section{margin-top:12px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .columns{grid-template-columns:1fr} }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Settings — Configure LibreWolf for Windows",
+    "description": "Step-by-step guidance to configure privacy and telemetry settings in LibreWolf on Windows, recommended preferences, and how to verify changes.",
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"},
+        {"@type":"ListItem","position":2,"name":"Privacy Settings","item":"https://librewolf-windows.github.io/privacy-settings.html"}
+      ]
+    }
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:20px">
+      <div class="columns">
+        <section class="card">
+          <h1 class="h1">Privacy Settings</h1>
+          <p class="lead">Quick answer: LibreWolf ships with privacy-first defaults. This guide explains the most important settings you can review or change on Windows — telemetry toggles, cookie handling, trackers, site permissions, and recommended about:config tweaks for advanced users.</p>
+
+          <div class="section">
+            <h2>Where to find privacy controls</h2>
+            <p style="color:var(--muted)">Open the main menu ▸ Settings ▸ Privacy & Security. Most high-level controls — like Enhanced Tracking Protection, cookies, and permissions — are available in the UI. Advanced preferences are in <code>about:config</code> (use with caution).</p>
+          </div>
+
+          <div class="section">
+            <h2>Recommended UI settings (beginner)</h2>
+            <ol style="color:var(--muted)">
+              <li><strong>Enhanced Tracking Protection:</strong> set to <em>Strict</em> for maximum blocking of trackers and third-party cookies. Note: some websites may require <em>Standard</em> for compatibility.</li>
+              <li><strong>Cookies and Site Data:</strong> block third‑party cookies and enable "Clear cookies and site data when Firefox is closed" if you want ephemeral sessions.</li>
+              <li><strong>Permissions:</strong> set location, camera and microphone to "Ask" or "Block" by default; only allow sites you trust.</li>
+              <li><strong>Clear history on close:</strong> consider enabling for additional privacy on shared machines.</li>
+            </ol>
+          </div>
+
+          <div class="section">
+            <h2>Advanced preferences (about:config)</h2>
+            <p style="color:var(--muted)">Advanced users can fine-tune preferences in <code>about:config</code>. Below are common privacy-oriented keys. Editing about:config can change browser behavior — back up your profile first.</p>
+            <ul style="color:var(--muted)">
+              <li><code>toolkit.telemetry.enabled</code> = <code>false</code> — disables some telemetry (LibreWolf typically sets this).</li>
+              <li><code>datareporting.healthreport.uploadEnabled</code> = <code>false</code> — disable health reports.</li>
+              <li><code>privacy.resistFingerprinting</code> = <code>true</code> — enable fingerprinting resistance (may change site behavior).</li>
+              <li><code>network.cookie.cookieBehavior</code> = <code>1</code> or <code>4</code> — control cookie policies (1 = block third-party, 4 = block all third-party and partitioning).</li>
+            </ul>
+            <p style="color:var(--muted)">Note: LibreWolf builds include many of these changes by default; use this section to verify settings or to customize further.</p>
+          </div>
+
+          <div class="section">
+            <h2>Privacy-enhancing extensions</h2>
+            <p style="color:var(--muted)">Consider the following extensions for layered protection:</p>
+            <ul style="color:var(--muted)">
+              <li><strong>uBlock Origin</strong> — efficient content blocker (recommended).</li>
+              <li><strong>HTTPS Everywhere / Smart HTTPS</strong> — prefer secure connections where available.</li>
+              <li><strong>Privacy Badger</strong> — automated tracker blocking (optional).</li>
+            </ul>
+            <p style="color:var(--muted)">Avoid installing many overlapping privacy extensions — they can conflict and reduce performance. LibreWolf aims to provide a strong baseline so you only need minimal add-ons.</p>
+          </div>
+
+          <div class="section">
+            <h2>Privacy with portable vs installer</h2>
+            <p style="color:var(--muted)">Both builds share the same privacy defaults. The portable build stores profile data in the portable folder (recommended for ephemeral sessions). If you need centralized profile management or enterprise policy application, prefer the installer with managed preferences.</p>
+          </div>
+
+          <div class="section">
+            <h2>Verify privacy & telemetry settings</h2>
+            <p style="color:var(--muted)">Use these checks:</p>
+            <ul style="color:var(--muted)">
+              <li>Visit <a href="https://amiunique.org/" target="_blank" rel="noopener">amiunique.org</a> to inspect fingerprinting surface.</li>
+              <li>Use <a href="https://privacytest.org/" target="_blank" rel="noopener">privacytest.org</a> to evaluate blocking strength.</li>
+              <li>Inspect <code>about:config</code> for keys listed above.</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <h2>Want the default hardened profile?</h2>
+            <p style="color:var(--muted)">LibreWolf ships with many privacy changes out of the box. If you build or install from source, use the project's profile and patches. For binary users, verify settings in <a href="/privacy-telemetry.html">Telemetry</a> and apply any additional preferences in <code>about:config</code> as needed.</p>
+
+            <div style="margin-top:12px"><a class="btn btn-primary" href="/download.html">Download LibreWolf — verify checksums</a></div>
+          </div>
+
+          <div class="section">
+            <h2>Further reading & related pages</h2>
+            <ul style="color:var(--muted)">
+              <li><a href="/privacy-telemetry.html">Telemetry — what is collected and why</a></li>
+              <li><a href="/privacy-settings.html">This guide — quick reference</a></li>
+              <li><a href="/support-troubleshooting.html">Troubleshooting privacy-related site issues</a></li>
+              <li><a href="/faq.html">FAQ</a></li>
+            </ul>
+          </div>
+
+        </section>
+
+        <aside class="card" aria-labelledby="sidebar-title">
+          <h2 id="sidebar-title" style="margin-top:0">Quick actions</h2>
+          <p style="color:var(--muted);margin-top:0">Open Settings ▸ Privacy & Security to apply common changes. Use <code>about:config</code> only if you understand the implications.</p>
+          <div style="margin-top:12px"><a class="btn btn-primary" href="/install.html">Open Install Guide</a></div>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+          <div style="color:var(--muted);font-size:0.92rem">Related</div>
+          <ul style="padding-left:18px;margin:8px 0;color:var(--muted)">
+            <li><a href="/privacy-telemetry.html">Telemetry details</a></li>
+            <li><a href="/portable-vs-install.html">Portable vs Installer</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+          </ul>
+
+          <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+          <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+        </aside>
+      </div>
+
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content && build.content !== '[BUILD_DATE]' ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+    })();
+  </script>
+
+</body>
+</html>

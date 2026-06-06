@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Portable vs Installer — LibreWolf for Windows</title>
+  <meta name="description" content="Compare portable and installer builds of LibreWolf for Windows. Learn advantages, limitations, update methods, and recommended workflows for privacy-focused users.">
+  <link rel="canonical" href="https://librewolf-windows.github.io/portable-vs-install.html">
+  <meta name="robots" content="index, follow">
+  <meta name="build-date" content="[BUILD_DATE]">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="LibreWolf for Windows">
+  <meta property="og:title" content="Portable vs Installer — LibreWolf for Windows">
+  <meta property="og:description" content="Compare portable and installer builds of LibreWolf for Windows. Advantages, limitations and how-to guides for each option.">
+  <meta property="og:url" content="https://librewolf-windows.github.io/portable-vs-install.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0F172A">
+
+  <style>
+    :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:var(--container-pad)}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;display:inline-block}
+    .title{font-weight:700;font-size:1.05rem}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-size:0.95rem}
+    nav a:hover, nav a:focus{background:rgba(255,255,255,0.02);color:var(--text)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .h1{font-size:1.6rem;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .columns{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:12px}
+    .compare-table th, .compare-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:0.95rem;color:var(--muted)}
+    .compare-table th{color:var(--text);font-weight:700;background:transparent}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042024}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    footer{margin-top:28px;padding:18px;border-top:1px solid var(--border);color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:900px){ .columns{grid-template-columns:1fr} }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Portable vs Installer — LibreWolf for Windows",
+    "description": "Comparison of portable and installer builds for LibreWolf on Windows. Choose the right workflow for privacy, updates and portability.",
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/"},
+        {"@type":"ListItem","position":2,"name":"Portable vs Install","item":"https://librewolf-windows.github.io/portable-vs-install.html"}
+      ]
+    }
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;border-radius:12px;padding:6px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#0B1220"/><path d="M6 15c2-4 6-6 9-7" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="title">LibreWolf for Windows</div>
+          <div style="font-size:0.88rem;color:var(--muted)">Private, telemetry‑free browser — unofficial installer</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/install.html">Install</a>
+        <a href="/portable.html">Portable</a>
+        <a href="/drm-widevine.html">DRM & Streaming</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/privacy-telemetry.html">Privacy</a>
+      </nav>
+    </header>
+
+    <main style="margin-top:20px">
+      <div class="columns">
+        <section class="card">
+          <h1 class="h1">Portable vs Installer — Which one should you use?</h1>
+          <p class="lead">Quick answer: Use the installer for everyday Windows users who want automatic updates and system integration. Use the portable build when you need a no‑install, no‑admin workflow or a disposable profile on removable media.</p>
+
+          <h2 style="margin-top:12px">Overview</h2>
+          <p style="color:var(--muted)">This page explains practical differences between the official installer and the portable distribution of LibreWolf for Windows. We'll cover installation, updates, privacy implications, portability, and recommended workflows for different user types.</p>
+
+          <h2 style="margin-top:12px">Quick comparison</h2>
+          <table class="compare-table" aria-hidden="false">
+            <thead>
+              <tr><th>Aspect</th><th>Installer</th><th>Portable</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Requires admin</td><td>No (standard installer) — creates shortcuts and file associations</td><td>No (no admin required) — runs from folder or USB</td></tr>
+              <tr><td>Updates</td><td>Automatic or manual via installer/winget</td><td>Manual update — replace binary or use portable updater</td></tr>
+              <tr><td>Profile location</td><td>%APPDATA% (user profile by default)</td><td>Profile inside portable folder or specified path</td></tr>
+              <tr><td>Registry / system integration</td><td>Yes (shortcuts, default browser option)</td><td>No—keeps system clean</td></tr>
+              <tr><td>Use case</td><td>Daily driver on a dedicated device</td><td>Temporary use, tests, shared machines, USB</td></tr>
+            </tbody>
+          </table>
+
+          <h2 style="margin-top:12px">Detailed pros & cons</h2>
+          <h3 style="margin:8px 0">Installer — Pros</h3>
+          <ul style="color:var(--muted)">
+            <li>System integration: start menu, default browser option and file associations.</li>
+            <li>Easier updates: use winget or built-in installer updates for security patches.</li>
+            <li>Better for users who want a permanent browser with consistent profile and extensions.</li>
+          </ul>
+
+          <h3 style="margin:8px 0">Installer — Cons</h3>
+          <ul style="color:var(--muted)">
+            <li>Touches system settings (shortcuts, optionally registry) — may be undesired on locked machines.</li>
+            <li>Requires occasional maintenance for updates on large deployments (use winget for automation).</li>
+          </ul>
+
+          <h3 style="margin:8px 0">Portable — Pros</h3>
+          <ul style="color:var(--muted)">
+            <li>No installation required — copy and run. Useful when admin rights are not available.</li>
+            <li>Isolated profile: keeps data and preferences inside the portable folder.</li>
+            <li>Easy to test or run multiple versions side‑by‑side.</li>
+          </ul>
+
+          <h3 style="margin:8px 0">Portable — Cons</h3>
+          <ul style="color:var(--muted)">
+            <li>No automatic updates by default — manual replacement required.</li>
+            <li>Performance on USB drives may vary; av software may scan portable files.</li>
+            <li>Less convenient for daily use on a single machine.</li>
+          </ul>
+
+          <h2 style="margin-top:12px">Recommended workflows</h2>
+          <p style="color:var(--muted)"><strong>Everyday user:</strong> install the official installer and enable updates via winget or installer to keep security current. For enterprise deployment, use winget or centralized management.</p>
+          <p style="color:var(--muted)"><strong>Power user / tester:</strong> keep a portable build on USB for testing or temporary sessions; backup profile folder to preserve bookmarks & settings.</p>
+
+          <h2 style="margin-top:12px">How to switch profiles (portable → installed)</h2>
+          <ol style="color:var(--muted)">
+            <li>Locate portable profile folder (usually inside the portable directory).</li>
+            <li>Copy the profile folder to %APPDATA%\LibreWolf\Profiles\</li>
+            <li>Start the installed LibreWolf with -profile <path> to confirm migration.</li>
+            <li>Verify extensions and privacy settings after migration.</li>
+          </ol>
+
+          <h2 style="margin-top:12px">Verifying downloads & checksums</h2>
+          <p style="color:var(--muted)">Always verify the integrity of the build before running. Official checksums are shown on the <a href="/download.html">Download</a> page. Example PowerShell command:</p>
+          <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;color:var(--muted);overflow:auto">Get-FileHash .\librewolf-150.0.1-1-windows-x86_64-setup.exe -Algorithm SHA256</pre>
+
+          <h2 style="margin-top:12px">Privacy considerations</h2>
+          <p style="color:var(--muted)">Both builds include the same privacy-focused defaults (telemetry disabled, hardened prefs). The core difference is where the profile & update logic live. See <a href="/privacy-telemetry.html">Telemetry</a> and <a href="/privacy-settings.html">Privacy Settings</a> for precise controls.</p>
+
+          <h2 style="margin-top:12px">Quick links</h2>
+          <ul style="color:var(--muted)">
+            <li><a href="/download.html">Download page (checksums, mirrors)</a></li>
+            <li><a href="/install.html">Installer guide</a></li>
+            <li><a href="/portable.html">Portable guide (run, update, migrate)</a></li>
+            <li><a href="/install-winget.html">Install via winget</a></li>
+            <li><a href="/support-troubleshooting.html">Troubleshooting</a></li>
+          </ul>
+
+        </section>
+
+        <aside class="card" aria-labelledby="sidebar-title">
+          <h2 id="sidebar-title" style="margin-top:0">Which to choose?</h2>
+          <p style="color:var(--muted);margin-top:0">If you want convenience and automatic updates — use the installer. If you need portability or no‑admin usage — use the portable build.</p>
+
+          <div style="margin-top:12px">
+            <a class="btn btn-primary" href="/download.html" aria-label="Open download page">Go to Download</a>
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+
+          <div style="color:var(--muted);font-size:0.92rem">Related</div>
+          <ul style="padding-left:18px;margin:8px 0;color:var(--muted)">
+            <li><a href="/portable-vs-install.html">This comparison (current)</a></li>
+            <li><a href="/install-winget.html">winget package</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+          </ul>
+
+          <div style="margin-top:12px;color:var(--muted);font-size:0.9rem">Last updated:</div>
+          <div id="last-modified" style="font-weight:600;margin-top:6px">—</div>
+        </aside>
+      </div>
+
+    </main>
+
+    <footer>
+      <div>Unofficial page • Not affiliated with the LibreWolf project. Uses official release assets.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="/privacy-telemetry.html" style="color:var(--muted)">Privacy & Telemetry</a>
+        <a href="/sitemap.xml" style="color:var(--muted)">Sitemap</a>
+        <div style="color:var(--muted);font-size:0.92rem">© LibreWolf builds mirror</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const lm = document.getElementById('last-modified');
+      try{
+        const build = document.querySelector('meta[name="build-date"]');
+        const dateStr = build && build.content && build.content !== '[BUILD_DATE]' ? build.content : document.lastModified;
+        const dm = dateStr ? new Date(dateStr) : new Date();
+        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }catch(e){ lm.textContent = 'Unknown'; }
+    })();
+  </script>
+
+</body>
+</html>
