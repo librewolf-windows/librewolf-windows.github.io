@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="captcha-widget.min.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Download LibreWolf for Windows — Official Installer</title>
@@ -23,7 +21,7 @@
   <style>
     :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
     *{box-sizing:border-box}
-    html,body{Height:100%}
+    html,body{height:100%}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
     a{color:var(--accent);text-decoration:none}
     a:focus{outline:none;box-shadow:var(--focus)}
@@ -61,15 +59,6 @@
     @media (max-width:900px){ .hero{grid-template-columns:1fr;} .card{padding:16px} }
     @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   </style>
-
-  <!-- GA4 snippet (analytics disabled until consent) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PENKWJKN66"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date());
-    gtag('consent','default', { 'analytics_storage':'denied' });
-  </script>
 </head>
 <body>
   <!-- SVG sprite (logo + icons) -->
@@ -111,12 +100,13 @@
             <div class="muted" style="margin-top:6px">File integrity: verify SHA256 before running. Mirror URLs are shown below as plain text for transparency.</div>
           </div>
           <div>
-            <button id="top-download" class="btn btn-primary" data-captcha-trigger data-captcha-keyword="librewolf-Installer" data-file="librewolf-150.0.1-1-windows-x86_64-setup.exe" aria-label="Start download LibreWolf-installer">Start download</button>
+            <!-- Buttons keep data attributes. Widget will bind directly to these if captcha-widget scans for [data-captcha-trigger] -->
+            <button id="top-download" class="btn btn-primary" data-captcha-trigger data-captcha-keyword="librewolf-Installer" data-file="librewolf-150.0.1-1-windows-x86_64-setup.exe" aria-label="Start download LibreWolf installer">Start download</button>
           </div>
         </div>
 
         <div class="content" style="margin-top:16px">
-          <p class="lead">This page shows the official mirror URLs as plain text so that search engines, link-checkers and users can see exactly where the file is hosted. Use the Start download button (top or below) to fetch the file; your external captcha loader will run and then perform the final redirect to the file.</p>
+          <p class="lead">This page shows the official mirror URLs as plain text so that search engines, link-checkers and users can see exactly where the file is hosted. Use the Start download button (top or below) to fetch the file; the captcha widget (local) will handle verification and server-side token exchange.</p>
 
           <h2>Official mirror URLs (plain text)</h2>
           <p class="muted">Installer (x86_64):</p>
@@ -141,7 +131,7 @@
           </noscript>
 
           <div style="margin-top:18px" class="muted">
-            <strong>Notes for site operators:</strong> your external captcha loader must detect elements with attribute [data-captcha-trigger] and use data-captcha-keyword to determine the verification flow and final redirect. On successful captcha verification, your script should navigate to the mirror URL (the plain text value) or call a server endpoint that returns a 302 to the mirror.
+            <strong>Notes for site operators:</strong> this page assumes a local captcha-widget that binds to elements marked with <code>data-captcha-trigger</code>. The widget should perform verification and return a tokenized URL (or perform server-side redirect) to start the download.
           </div>
 
         </div>
@@ -193,7 +183,7 @@
     </div>
   </div>
 
-  <!-- JSON-LD: SoftwareApplication + DataDownload + Breadcrumb + FAQ (checksum placeholder) -->
+  <!-- Structured data: SoftwareApplication + DataDownload + Breadcrumb + FAQ (checksum placeholder) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -217,130 +207,56 @@
           "checksum": {"@type":"PropertyValue","propertyID":"sha256","value":"[INSERT_OFFICIAL_SHA256_HERE]"}
         },
         "dateModified":"2026-06-06T19:08:00Z"
-      },
-      {
-        "@type":"DownloadAction",
-        "target":{
-          "@type":"EntryPoint",
-          "urlTemplate":"https://librewolf-windows.github.io/download.html"
-        }
-      },
-      {
-        "@type":"BreadcrumbList",
-        "itemListElement":[
-          {"@type":"ListItem","position":1,"name":"Home","item":"https://librewolf-windows.github.io/index.html"},
-          {"@type":"ListItem","position":2,"name":"Download","item":"https://librewolf-windows.github.io/download.html"}
-        ]
-      },
-      {
-        "@type":"FAQPage",
-        "mainEntity":[
-          {"@type":"Question","name":"How do I verify the download?","acceptedAnswer":{"@type":"Answer","text":"Compare the SHA256 checksum from this page to the output of Get-FileHash or certutil on your machine before running the installer."}},
-          {"@type":"Question","name":"What builds are available?","acceptedAnswer":{"@type":"Answer","text":"Installer (recommended), portable builds, and winget package are available. See the respective pages for details and instructions."}}
-        ]
       }
     ]
   }
   </script>
 
+  <!-- Load reCAPTCHA and local captcha widget (widget is expected to bind to [data-captcha-trigger]) -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="/captcha-widget.min.js" defer></script>
+
+  <!-- GA + consent mode (queue pattern) + click tracking for captcha triggers (matches SRWare example) -->
   <script>
-  (function(){
-    // Cookie banner logic (same as index)
-    const banner = document.getElementById('cookie-banner');
-    const acceptBtn = document.getElementById('cookie-accept');
-    const declineBtn = document.getElementById('cookie-decline');
-    const manageBtn = document.getElementById('cookie-manage');
+    (function(){
+      // GA bootstrap (queue)
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      if(!window.__gaQueue){ window.__gaQueue = []; }
+      if(!window.__gaInitialized){ gtag('consent','default',{ ad_storage:'denied', analytics_storage:'denied' }); }
 
-    function setConsent(state){
-      localStorage.setItem('site_cookie_consent', state);
-      if(state === 'granted'){
-        try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
-        try{ gtag('config','G-PENKWJKN66'); }catch(e){}
-      } else {
-        try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
-      }
-      banner.style.display = 'none';
-    }
+      var GA_ID='G-PENKWJKN66';
+      var banner = document.getElementById('cookie-banner');
+      var acceptBtn = document.getElementById('cookie-accept');
+      var declineBtn = document.getElementById('cookie-decline');
+      var manageBtn = document.getElementById('cookie-manage');
+      var key='site_cookie_consent';
+      var sessionHide='cookieBannerHiddenOnce';
 
-    const stored = localStorage.getItem('site_cookie_consent');
-    if(!stored){ banner.style.display = 'flex'; }
-    else if(stored === 'granted'){ try{ gtag('config','G-PENKWJKN66'); }catch(e){} }
+      function showBanner(){ if(banner) banner.style.display='flex'; }
+      function hideBanner(){ if(banner) banner.style.display='none'; }
+      function loadGA(){ if(window.__gaLoaded) return; window.__gaLoaded=true; var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(GA_ID); s.onload=function(){ window.__gaInitialized=true; try{ gtag('js', new Date()); gtag('config', GA_ID, { 'send_page_view': false }); }catch(e){}; if(window.__gaQueue && window.__gaQueue.length){ window.__gaQueue.forEach(function(args){ try{ gtag.apply(null,args);}catch(e){} }); window.__gaQueue=[]; } try{ gtag('event','page_view', { page_location: location.href, page_path: location.pathname, page_title: document.title }); }catch(e){} }; document.head.appendChild(s); }
+      function grantAnalytics(){ gtag('consent','update',{analytics_storage:'granted'}); loadGA(); }
 
-    acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
-    declineBtn.addEventListener('click',function(){ setConsent('denied'); });
-    manageBtn.addEventListener('click',function(){ window.location.href = '/privacy-telemetry.html'; });
+      var saved = localStorage.getItem(key);
+      if(saved==='granted'){ grantAnalytics(); } else if(saved==='denied'){ /* no-op */ } else { if(!sessionStorage.getItem(sessionHide)) showBanner(); }
+      acceptBtn && acceptBtn.addEventListener('click', function(){ localStorage.setItem(key,'granted'); hideBanner(); grantAnalytics(); });
+      declineBtn && declineBtn.addEventListener('click', function(){ localStorage.setItem(key,'denied'); hideBanner(); });
+      manageBtn && manageBtn.addEventListener('click', function(){ window.location.href = '/privacy-telemetry.html'; });
 
-    // Last modified display
-    const lm = document.getElementById('last-modified');
-    try{
-      const build = document.querySelector('meta[name="build-date"]');
-      const dateStr = build && build.content ? build.content : document.lastModified;
-      const dm = dateStr ? new Date(dateStr) : new Date();
-      lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
-    }catch(e){ lm.textContent = 'Unknown'; }
-
-    // ===== New download button behavior (no immediate redirect) =====
-    // Remove any immediate redirect: on click we only dispatch captcha:request and open modal.
-
-    // Listen for verification from external captcha loader
-    window.addEventListener('captcha:verified', function(ev){
-      const d = ev && ev.detail ? ev.detail : {};
-      const redirectUrl = d.redirectUrl || d.mirrorUrl || (document.getElementById('mirror-text') && document.getElementById('mirror-text').textContent.trim());
-
-      // Analytics: send download_verified if consent given
-      try{
-        const consent = localStorage.getItem('site_cookie_consent');
-        if(consent === 'granted'){
-          try{ gtag('event','download_verified', { event_category:'download', event_label: d.file || '' }); }catch(e){}
+      // Track captcha trigger clicks (analytics)
+      document.addEventListener('click', function(e){
+        var btn = e.target.closest('[data-captcha-trigger]');
+        if(btn){
+          var label = (btn.getAttribute('data-captcha-keyword') || btn.textContent || '').trim();
+          try{
+            if(typeof gtag==='function' && window.__gaInitialized){ gtag('event','captcha_open', { event_category:'security', event_label: label }); }
+            else { window.__gaQueue.push(['event','captcha_open', { event_category:'security', event_label: label }]); }
+          }catch(err){}
         }
-      }catch(e){}
+      }, true);
 
-      if(redirectUrl){
-        window.location.href = redirectUrl;
-      } else {
-        console.error('captcha:verified received but no redirectUrl available');
-      }
-    });
-
-    window.addEventListener('captcha:failed', function(ev){
-      // Optionally notify user via modal UI; external script can also manage errors in its UI
-      console.warn('captcha failed', ev && ev.detail);
-    });
-
-    // Replace old attach logic: dispatch captcha:request instead of redirect
-    function initDownloadButton(id){
-      const btn = document.getElementById(id);
-      if(!btn) return;
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        const file = btn.getAttribute('data-file') || null;
-        const keyword = btn.getAttribute('data-captcha-keyword') || null;
-        const mirror = document.getElementById('mirror-text') ? document.getElementById('mirror-text').textContent.trim() : null;
-
-        // Analytics: optional event for initiation (only if consent)
-        try{
-          const consent = localStorage.getItem('site_cookie_consent');
-          if(consent === 'granted'){
-            try{ gtag('event','download_initiated', { event_category:'download', event_label: file }); }catch(e){}
-          }
-        }catch(e){}
-
-        // Dispatch custom event to notify external captcha loader to show UI
-        const ev = new CustomEvent('captcha:request', { detail: { file: file, keyword: keyword, mirrorUrl: mirror }, bubbles: true, cancelable: true });
-        window.dispatchEvent(ev);
-
-        // If the page manages the modal itself, call your modal open function here
-        // e.g. openCaptchaModal();
-      });
-    }
-
-    initDownloadButton('top-download');
-    initDownloadButton('start-download');
-
-    // IMPORTANT: ensure there are no other scripts that still perform window.location to the mirror on click
-  })();
+    })();
   </script>
 </body>
 </html>
