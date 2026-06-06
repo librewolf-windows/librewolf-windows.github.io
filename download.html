@@ -21,7 +21,7 @@
   <style>
     :root{ --bg:#0F172A; --surface:#111827; --muted:#94A3B8; --text:#E5E7EB; --accent:#22D3EE; --accent-2:#14B8A6; --interactive:#4F46E5; --border:#1F2937; --radius:10px; --max-width:1100px; --container-pad:18px; --focus:3px solid rgba(34,211,238,0.18); --shadow:0 6px 18px rgba(2,6,23,0.6); --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{Height:100%}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#071121);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;line-height:1.45}
     a{color:var(--accent);text-decoration:none}
     a:focus{outline:none;box-shadow:var(--focus)}
@@ -109,7 +109,7 @@
             <div class="muted" style="margin-top:6px">File integrity: verify SHA256 before running. Mirror URLs are shown below as plain text for transparency.</div>
           </div>
           <div>
-            <button id="top-download" class="btn btn-primary" data-captcha-trigger data-captcha-keyword="SRWare-Iron-Installer" data-file="librewolf-150.0.1-1-windows-x86_64-setup.exe" aria-label="Start download LibreWolf installer">Start download</button>
+            <button id="top-download" class="btn btn-primary" data-captcha-trigger data-captcha-keyword="librewolf-Installer" data-file="librewolf-150.0.1-1-windows-x86_64-setup.exe" aria-label="Start download LibreWolf installer">Start download</button>
           </div>
         </div>
 
@@ -242,52 +242,103 @@
   </script>
 
   <script>
-    (function(){
-      // Cookie banner logic (same as index)
-      const banner = document.getElementById('cookie-banner');
-      const acceptBtn = document.getElementById('cookie-accept');
-      const declineBtn = document.getElementById('cookie-decline');
-      const manageBtn = document.getElementById('cookie-manage');
+  (function(){
+    // Cookie banner logic (same as index)
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept');
+    const declineBtn = document.getElementById('cookie-decline');
+    const manageBtn = document.getElementById('cookie-manage');
 
-      function setConsent(state){
-        localStorage.setItem('site_cookie_consent', state);
-        if(state === 'granted'){
-          try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
-          try{ gtag('config','G-PENKWJKN66'); }catch(e){}
-        } else {
-          try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
-        }
-        banner.style.display = 'none';
+    function setConsent(state){
+      localStorage.setItem('site_cookie_consent', state);
+      if(state === 'granted'){
+        try{ gtag('consent','update',{ 'analytics_storage':'granted' }); }catch(e){}
+        try{ gtag('config','G-PENKWJKN66'); }catch(e){}
+      } else {
+        try{ gtag('consent','update',{ 'analytics_storage':'denied' }); }catch(e){}
       }
+      banner.style.display = 'none';
+    }
 
-      const stored = localStorage.getItem('site_cookie_consent');
-      if(!stored){ banner.style.display = 'flex'; }
-      else if(stored === 'granted'){ try{ gtag('config','G-PENKWJKN66'); }catch(e){} }
+    const stored = localStorage.getItem('site_cookie_consent');
+    if(!stored){ banner.style.display = 'flex'; }
+    else if(stored === 'granted'){ try{ gtag('config','G-PENKWJKN66'); }catch(e){} }
 
-      acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
-      declineBtn.addEventListener('click',function(){ setConsent('denied'); });
-      manageBtn.addEventListener('click',function(){ window.location.href = '/privacy-telemetry.html'; });
+    acceptBtn.addEventListener('click',function(){ setConsent('granted'); });
+    declineBtn.addEventListener('click',function(){ setConsent('denied'); });
+    manageBtn.addEventListener('click',function(){ window.location.href = '/privacy-telemetry.html'; });
 
-      // Last modified display
-      const lm = document.getElementById('last-modified');
+    // Last modified display
+    const lm = document.getElementById('last-modified');
+    try{
+      const build = document.querySelector('meta[name="build-date"]');
+      const dateStr = build && build.content ? build.content : document.lastModified;
+      const dm = dateStr ? new Date(dateStr) : new Date();
+      lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
+    }catch(e){ lm.textContent = 'Unknown'; }
+
+    // ===== New download button behavior (no immediate redirect) =====
+    // Remove any immediate redirect: on click we only dispatch captcha:request and open modal.
+
+    // Listen for verification from external captcha loader
+    window.addEventListener('captcha:verified', function(ev){
+      const d = ev && ev.detail ? ev.detail : {};
+      const redirectUrl = d.redirectUrl || d.mirrorUrl || (document.getElementById('mirror-text') && document.getElementById('mirror-text').textContent.trim());
+
+      // Analytics: send download_verified if consent given
       try{
-        const build = document.querySelector('meta[name="build-date"]');
-        const dateStr = build && build.content ? build.content : document.lastModified;
-        const dm = dateStr ? new Date(dateStr) : new Date();
-        lm.textContent = dm.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric' });
-      }catch(e){ lm.textContent = 'Unknown'; }
+        const consent = localStorage.getItem('site_cookie_consent');
+        if(consent === 'granted'){
+          try{ gtag('event','download_verified', { event_category:'download', event_label: d.file || '' }); }catch(e){}
+        }
+      }catch(e){}
 
-      // Download buttons handling (top and secondary)
-      function attach(id){
-        const btn = document.getElementById(id); if(!btn) return;
-        btn.addEventListener('click', function(e){
-          try{ const consent = localStorage.getItem('site_cookie_consent'); if(consent === 'granted'){ try{ gtag('event','download_click',{ event_category:'download', event_label: btn.getAttribute('data-file') }); }catch(err){} } }catch(err){}
-          setTimeout(function(){ window.location.href = document.getElementById('mirror-text').textContent.trim(); },400);
-        });
+      if(redirectUrl){
+        window.location.href = redirectUrl;
+      } else {
+        console.error('captcha:verified received but no redirectUrl available');
       }
-      attach('top-download'); attach('start-download');
+    });
 
-    })();
+    window.addEventListener('captcha:failed', function(ev){
+      // Optionally notify user via modal UI; external script can also manage errors in its UI
+      console.warn('captcha failed', ev && ev.detail);
+    });
+
+    // Replace old attach logic: dispatch captcha:request instead of redirect
+    function initDownloadButton(id){
+      const btn = document.getElementById(id);
+      if(!btn) return;
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const file = btn.getAttribute('data-file') || null;
+        const keyword = btn.getAttribute('data-captcha-keyword') || null;
+        const mirror = document.getElementById('mirror-text') ? document.getElementById('mirror-text').textContent.trim() : null;
+
+        // Analytics: optional event for initiation (only if consent)
+        try{
+          const consent = localStorage.getItem('site_cookie_consent');
+          if(consent === 'granted'){
+            try{ gtag('event','download_initiated', { event_category:'download', event_label: file }); }catch(e){}
+          }
+        }catch(e){}
+
+        // Dispatch custom event to notify external captcha loader to show UI
+        const ev = new CustomEvent('captcha:request', { detail: { file: file, keyword: keyword, mirrorUrl: mirror }, bubbles: true, cancelable: true });
+        window.dispatchEvent(ev);
+
+        // If the page manages the modal itself, call your modal open function here
+        // e.g. openCaptchaModal();
+      });
+    }
+
+    initDownloadButton('top-download');
+    initDownloadButton('start-download');
+
+    // IMPORTANT: ensure there are no other scripts that still perform window.location to the mirror on click
+  })();
   </script>
 </body>
 </html>
